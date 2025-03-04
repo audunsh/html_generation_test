@@ -6,7 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Start Screen</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Add Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* Overall dark theme */
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 0;
+        }
+
         /* Add styles for full-screen sections */
         .screen {
             height: 100vh;
@@ -20,6 +30,16 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
+            background-color: rgba(18, 18, 18, 0.85);
+            background-blend-mode: overlay;
+            color: #ffffff;
+        }
+
+        /* Special styling for start screen */
+        #start-screen {
+            background-image: url('/public/background.webp');
+            background-color: rgba(0, 0, 0, 0.7);
+            /* Semi-transparent black overlay */
         }
 
         /* Style for navigation arrows */
@@ -31,6 +51,227 @@
             cursor: pointer;
             z-index: 10;
             /* Ensure arrows are on top */
+            color: #ffffff;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Dark theme for links */
+        a {
+            color: #bb86fc;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #03dac6;
+        }
+
+        /* Style for start circle */
+        .start-circle {
+            background-color: #2d2d2d;
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px auto;
+        }
+
+        .start-circle a {
+            color: #03dac6;
+            font-weight: bold;
+        }
+
+        /* Features section styling */
+        .features {
+            display: flex;
+            justify-content: space-around;
+            width: 80%;
+            margin-top: 30px;
+        }
+
+        .feature {
+            background-color: #2d2d2d;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .feature:hover {
+            transform: translateY(-5px);
+            background-color: #3d3d3d;
+        }
+
+        .feature img {
+            max-width: 100px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+
+        /* Navigation menu styling */
+        nav ul {
+            list-style: none;
+            display: flex;
+            padding: 0;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        h1,
+        h2 {
+            color: #bb86fc;
+            text-shadow: 0 0 10px rgba(187, 134, 252, 0.3);
+        }
+
+        /* Bottom navigation bar */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #1e1e1e;
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
+            z-index: 100;
+        }
+
+        .nav-button {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #bb86fc;
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-button:hover,
+        .nav-button.active {
+            background-color: #3d3d3d;
+            color: #03dac6;
+        }
+
+        .nav-button i {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .nav-button span {
+            font-size: 12px;
+        }
+
+        /* News feed styling */
+        .news-feed {
+            width: 90%;
+            max-width: 600px;
+            margin: 20px auto;
+            overflow-y: auto;
+            max-height: 70vh;
+        }
+
+        .post {
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .post-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+            background-color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            color: #bb86fc;
+        }
+
+        .post-info {
+            flex-grow: 1;
+        }
+
+        .post-author {
+            font-weight: bold;
+            color: #bb86fc;
+            margin: 0;
+        }
+
+        .post-meta {
+            font-size: 12px;
+            color: #888;
+            margin: 3px 0 0 0;
+        }
+
+        .post-content {
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .post-image {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .post-actions {
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid #333;
+            padding-top: 12px;
+        }
+
+        .post-action {
+            display: flex;
+            align-items: center;
+            color: #888;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .post-action:hover {
+            color: #03dac6;
+        }
+
+        .post-action i {
+            margin-right: 5px;
+        }
+
+        .company-post .post-avatar {
+            background-color: #2d4263;
+        }
+
+        .company-post .post-author {
+            color: #03dac6;
+        }
+
+        .verified-badge {
+            color: #03dac6;
+            margin-left: 5px;
+            font-size: 14px;
         }
     </style>
 </head>
@@ -41,7 +282,7 @@
             <a href="#start-screen">Start</a>
         </div>
 
-        <div id="start-screen" class="screen" style="background-image: url('path/to/your/image1.jpg');">
+        <div id="start-screen" class="screen">
             <div class="nav-arrow" onclick="location.href='#hub'">←</div>
             <header>
                 <h1>Start Screen</h1>
@@ -90,7 +331,105 @@
         <div id="community" class="screen" style="background-image: url('path/to/your/image5.jpg');">
             <div class="nav-arrow" onclick="location.href='#start-screen'">←</div>
             <h2>Community</h2>
-            <p>Information about the community.</p>
+
+            <div class="news-feed">
+                <!-- Individual Post -->
+                <div class="post">
+                    <div class="post-header">
+                        <div class="post-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="post-info">
+                            <p class="post-author">Sarah Johnson</p>
+                            <p class="post-meta">Posted 2 hours ago</p>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <p>Just finished planting 50 trees with @GreenEarth in our local park! Amazing to see the
+                            community come together for this initiative. #PlantForTheFuture</p>
+                        <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80"
+                            alt="Tree planting" class="post-image">
+                    </div>
+                    <div class="post-actions">
+                        <div class="post-action"><i class="fas fa-heart"></i> 124</div>
+                        <div class="post-action"><i class="fas fa-comment"></i> 18</div>
+                        <div class="post-action"><i class="fas fa-share"></i> Share</div>
+                    </div>
+                </div>
+
+                <!-- Company Post -->
+                <div class="post company-post">
+                    <div class="post-header">
+                        <div class="post-avatar">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <div class="post-info">
+                            <p class="post-author">EcoSolutions Inc. <i class="fas fa-check-circle verified-badge"></i>
+                            </p>
+                            <p class="post-meta">Posted yesterday</p>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <p>We're excited to announce our new zero-waste packaging initiative! Starting next month, all
+                            our products will ship in 100% compostable materials. Together, we can reduce plastic waste.
+                        </p>
+                    </div>
+                    <div class="post-actions">
+                        <div class="post-action"><i class="fas fa-heart"></i> 342</div>
+                        <div class="post-action"><i class="fas fa-comment"></i> 57</div>
+                        <div class="post-action"><i class="fas fa-share"></i> Share</div>
+                    </div>
+                </div>
+
+                <!-- Another User Post -->
+                <div class="post">
+                    <div class="post-header">
+                        <div class="post-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="post-info">
+                            <p class="post-author">Miguel Rodriguez</p>
+                            <p class="post-meta">Posted 3 days ago</p>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <p>My solar panel installation is finally complete! Excited to be generating my own clean
+                            energy. Has anyone else made the switch? Any tips for maximizing efficiency?</p>
+                        <img src="https://images.unsplash.com/photo-1509391366360-2e959784a276?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80"
+                            alt="Solar panels" class="post-image">
+                    </div>
+                    <div class="post-actions">
+                        <div class="post-action"><i class="fas fa-heart"></i> 89</div>
+                        <div class="post-action"><i class="fas fa-comment"></i> 32</div>
+                        <div class="post-action"><i class="fas fa-share"></i> Share</div>
+                    </div>
+                </div>
+
+                <!-- Another Company Post -->
+                <div class="post company-post">
+                    <div class="post-header">
+                        <div class="post-avatar">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <div class="post-info">
+                            <p class="post-author">GreenEarth Foundation <i
+                                    class="fas fa-check-circle verified-badge"></i></p>
+                            <p class="post-meta">Posted 4 days ago</p>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <p>Thank you to all 200+ volunteers who joined our beach cleanup last weekend! Together we
+                            collected over 500kg of plastic waste. Join us next month for our river cleanup event!</p>
+                        <img src="https://images.unsplash.com/photo-1618477461853-cf6ed80faba5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
+                            alt="Beach cleanup" class="post-image">
+                    </div>
+                    <div class="post-actions">
+                        <div class="post-action"><i class="fas fa-heart"></i> 276</div>
+                        <div class="post-action"><i class="fas fa-comment"></i> 42</div>
+                        <div class="post-action"><i class="fas fa-share"></i> Share</div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div id="connections" class="screen" style="background-image: url('path/to/your/image6.jpg');">
@@ -98,7 +437,47 @@
             <h2>Connections</h2>
             <p>Explore connections here.</p>
         </div>
+
+        <!-- Bottom Navigation Bar -->
+        <nav class="bottom-nav">
+            <a href="#hub" class="nav-button">
+                <i class="fas fa-home"></i>
+                <span>Hub</span>
+            </a>
+            <a href="#certified" class="nav-button">
+                <i class="fas fa-building"></i>
+                <span>Certified</span>
+            </a>
+            <a href="#community" class="nav-button">
+                <i class="fas fa-users"></i>
+                <span>Community</span>
+            </a>
+            <a href="#connections" class="nav-button">
+                <i class="fas fa-link"></i>
+                <span>Connections</span>
+            </a>
+        </nav>
     </div>
+
+    <!-- Script to highlight active navigation button -->
+    <script>
+        // Update active nav button based on current section
+        window.addEventListener('hashchange', updateActiveNav);
+        window.addEventListener('load', updateActiveNav);
+
+        function updateActiveNav() {
+            const currentHash = window.location.hash || '#start-screen';
+            const navButtons = document.querySelectorAll('.nav-button');
+
+            navButtons.forEach(button => {
+                if (button.getAttribute('href') === currentHash) {
+                    button.classList.add('active');
+                } else {
+                    button.classList.remove('active');
+                }
+            });
+        }
+    </script>
 </body>
 
 </html>
