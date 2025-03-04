@@ -41,7 +41,7 @@
         /* Special styling for start screen */
         #start-screen {
             background-image: url('/public/background.webp');
-            background-color: rgba(0, 0, 0, 0.7);
+            background-color: rgba(0, 0, 0, 1.0);
             /* Semi-transparent black overlay */
         }
 
@@ -279,8 +279,10 @@
 
         /* Earth container styling */
         #earth-container {
-            width: 300px;
-            height: 300px;
+            width: 600px;
+            /* Doubled from 300px */
+            height: 600px;
+            /* Doubled from 300px */
             position: relative;
             margin: 20px auto;
             border-radius: 50%;
@@ -320,7 +322,7 @@
                 </ul>
             </nav>
 
-            <!-- Add Earth container before features -->
+            <!-- Earth container with increased size -->
             <div id="earth-container"></div>
 
             <section class="features">
@@ -515,9 +517,9 @@
             // Create scene
             const scene = new THREE.Scene();
 
-            // Create camera
+            // Create camera - adjusted for larger Earth
             const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
-            camera.position.z = 1.8;
+            camera.position.z = 2.2;  // Adjusted camera position for larger view
 
             // Create renderer
             const container = document.getElementById('earth-container');
