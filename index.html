@@ -301,6 +301,70 @@
         #start-screen .features {
             margin-top: 20px;
         }
+
+        /* Post creation form styling */
+        .post-form {
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            width: 90%;
+            max-width: 600px;
+        }
+
+        .post-form textarea {
+            width: 100%;
+            background-color: #2d2d2d;
+            border: 1px solid #444;
+            border-radius: 8px;
+            color: #e0e0e0;
+            padding: 12px;
+            margin-bottom: 10px;
+            min-height: 80px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        .post-form-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .post-form-attachments {
+            display: flex;
+            gap: 15px;
+        }
+
+        .attachment-button {
+            color: #bb86fc;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .attachment-button:hover {
+            color: #03dac6;
+        }
+
+        .post-button {
+            background-color: #bb86fc;
+            color: #121212;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .post-button:hover {
+            background-color: #03dac6;
+        }
     </style>
 </head>
 
@@ -362,6 +426,25 @@
         <div id="community" class="screen" style="background-image: url('path/to/your/image5.jpg');">
             <div class="nav-arrow" onclick="location.href='#start-screen'">←</div>
             <h2>Community</h2>
+
+            <!-- Add post creation form -->
+            <div class="post-form">
+                <textarea placeholder="Share your environmental thoughts or initiatives..."></textarea>
+                <div class="post-form-actions">
+                    <div class="post-form-attachments">
+                        <button class="attachment-button">
+                            <i class="fas fa-image"></i> Photo
+                        </button>
+                        <button class="attachment-button">
+                            <i class="fas fa-video"></i> Video
+                        </button>
+                        <button class="attachment-button">
+                            <i class="fas fa-link"></i> Link
+                        </button>
+                    </div>
+                    <button class="post-button">Post</button>
+                </div>
+            </div>
 
             <div class="news-feed">
                 <!-- Individual Post -->
@@ -625,6 +708,56 @@
                     initEarth();
                 }
             }
+        });
+    </script>
+
+    <!-- Add JavaScript for post creation -->
+    <script>
+        // Post creation functionality
+        document.addEventListener('DOMContentLoaded', function () {
+            const postButton = document.querySelector('.post-button');
+            const postTextarea = document.querySelector('.post-form textarea');
+            const newsFeed = document.querySelector('.news-feed');
+
+            postButton.addEventListener('click', function () {
+                const postContent = postTextarea.value.trim();
+                if (postContent) {
+                    // Create new post element
+                    const newPost = document.createElement('div');
+                    newPost.className = 'post';
+
+                    // Get current date and time
+                    const now = new Date();
+                    const timeString = 'Just now';
+
+                    // Create post HTML
+                    newPost.innerHTML = `
+                        <div class="post-header">
+                            <div class="post-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="post-info">
+                                <p class="post-author">You</p>
+                                <p class="post-meta">Posted ${timeString}</p>
+                            </div>
+                        </div>
+                        <div class="post-content">
+                            <p>${postContent}</p>
+                        </div>
+                        <div class="post-actions">
+                            <div class="post-action"><i class="fas fa-heart"></i> 0</div>
+                            <div class="post-action"><i class="fas fa-comment"></i> 0</div>
+                            <div class="post-action"><i class="fas fa-share"></i> Share</div>
+                        </div>
+                    `;
+
+                    // Add new post at the top of the feed
+                    newsFeed.insertBefore(newPost, newsFeed.firstChild);
+
+                    // Clear the textarea
+                    postTextarea.value = '';
+                }
+            });
         });
     </script>
 </body>
