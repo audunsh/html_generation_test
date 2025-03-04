@@ -18,24 +18,45 @@
             color: #e0e0e0;
             margin: 0;
             padding: 0;
+            touch-action: manipulation;
+            overflow: hidden;
+            /* Prevent scrolling */
         }
 
-        /* Add styles for full-screen sections */
+        /* Change screen styling to be absolute positioned instead of scrollable */
         .screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
             height: 100vh;
-            /* Full viewport height */
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: flex-start;
             align-items: center;
-            position: relative;
-            /* For positioning arrows */
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             background-color: rgba(18, 18, 18, 0.85);
             background-blend-mode: overlay;
             color: #ffffff;
+            padding: 70px 15px 80px;
+            /* Add padding for navigation bars */
+            overflow-y: auto;
+            /* Allow scrolling within tabs */
+            z-index: 1;
+            /* Base z-index */
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        /* Active screen */
+        .screen.active {
+            opacity: 1;
+            pointer-events: auto;
+            z-index: 2;
+            /* Higher z-index for active screen */
         }
 
         /* Special styling for start screen */
@@ -57,8 +78,10 @@
             color: #ffffff;
             background-color: rgba(0, 0, 0, 0.5);
             border-radius: 50%;
-            width: 40px;
-            height: 40px;
+            width: 44px;
+            /* Increased touch target */
+            height: 44px;
+            /* Increased touch target */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -95,18 +118,21 @@
         /* Features section styling */
         .features {
             display: flex;
-            justify-content: space-around;
-            width: 80%;
-            margin-top: 30px;
+            flex-direction: column;
+            /* Stack on mobile */
+            width: 90%;
+            margin-top: 20px;
         }
 
         .feature {
             background-color: #2d2d2d;
             border-radius: 8px;
             padding: 15px;
-            margin: 10px;
+            margin: 8px 0;
+            /* Vertical spacing */
             text-align: center;
             transition: transform 0.3s ease;
+            width: 100%;
         }
 
         .feature:hover {
@@ -149,6 +175,7 @@
             padding: 12px 0;
             box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
             z-index: 100;
+            /* Ensure nav is above all screens */
         }
 
         .nav-button {
@@ -157,7 +184,8 @@
             align-items: center;
             color: #bb86fc;
             text-decoration: none;
-            padding: 8px 12px;
+            padding: 12px 16px;
+            /* Larger touch target */
             border-radius: 8px;
             transition: all 0.3s ease;
         }
@@ -170,7 +198,7 @@
 
         .nav-button i {
             font-size: 24px;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
         }
 
         .nav-button span {
@@ -179,11 +207,8 @@
 
         /* News feed styling */
         .news-feed {
-            width: 90%;
-            max-width: 600px;
-            margin: 20px auto;
-            overflow-y: auto;
-            max-height: 70vh;
+            width: 95%;
+            max-height: 60vh;
         }
 
         .post {
@@ -279,10 +304,13 @@
 
         /* Earth container styling */
         #earth-container {
-            width: 600px;
-            /* Doubled from 300px */
-            height: 600px;
-            /* Doubled from 300px */
+            width: 90vw;
+            /* Use viewport width */
+            height: 90vw;
+            /* Keep it square */
+            max-width: 400px;
+            /* Cap the maximum size */
+            max-height: 400px;
             position: relative;
             margin: 20px auto;
             border-radius: 50%;
@@ -308,8 +336,8 @@
             border-radius: 8px;
             padding: 15px;
             margin-bottom: 20px;
-            width: 90%;
-            max-width: 600px;
+            width: 95%;
+            /* Match the width of the news feed */
         }
 
         .post-form textarea {
@@ -329,6 +357,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            /* Allow wrapping on very small screens */
         }
 
         .post-form-attachments {
@@ -345,6 +375,8 @@
             display: flex;
             align-items: center;
             gap: 5px;
+            padding: 10px 8px;
+            /* Larger touch target */
         }
 
         .attachment-button:hover {
@@ -356,14 +388,770 @@
             color: #121212;
             border: none;
             border-radius: 20px;
-            padding: 8px 20px;
+            padding: 10px 24px;
+            /* Larger touch target */
             font-weight: bold;
             cursor: pointer;
             transition: background-color 0.3s ease;
+            margin-top: 8px;
         }
 
         .post-button:hover {
             background-color: #03dac6;
+        }
+
+        /* Media query for larger devices */
+        @media (min-width: 768px) {
+            .features {
+                flex-direction: row;
+                justify-content: space-around;
+            }
+
+            .feature {
+                width: 30%;
+                margin: 10px;
+            }
+
+            .post-form,
+            .news-feed {
+                width: 90%;
+                max-width: 600px;
+            }
+
+            #earth-container {
+                width: 400px;
+                height: 400px;
+            }
+        }
+
+        /* Company list styling */
+        .section-intro {
+            text-align: center;
+            margin-bottom: 20px;
+            width: 90%;
+        }
+
+        .company-list {
+            width: 95%;
+            max-width: 600px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 80px;
+            /* Space for bottom nav */
+        }
+
+        .company-card {
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s ease, background-color 0.2s ease;
+        }
+
+        .company-card:hover {
+            transform: translateY(-3px);
+            background-color: #2a2a2a;
+        }
+
+        .company-logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: #2d4263;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .company-icon {
+            font-size: 24px;
+            color: #03dac6;
+        }
+
+        .company-info {
+            flex-grow: 1;
+        }
+
+        .company-info h3 {
+            margin: 0 0 5px 0;
+            color: #bb86fc;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .company-type {
+            font-size: 12px;
+            color: #888;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .company-info p {
+            margin: 0 0 10px 0;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .company-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .badge {
+            background-color: #3d3d3d;
+            color: #03dac6;
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .verified-badge {
+            color: #03dac6;
+            font-size: 14px;
+        }
+
+        /* Hub content styling */
+        #hub {
+            padding-top: 60px;
+        }
+
+        .section-intro {
+            text-align: center;
+            margin-bottom: 20px;
+            width: 90%;
+            color: #bbbbbb;
+        }
+
+        /* Featured carousel */
+        .featured-carousel {
+            width: 95%;
+            max-width: 600px;
+            height: 200px;
+            position: relative;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .featured-item {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .featured-item.active {
+            opacity: 1;
+        }
+
+        .featured-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .featured-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            color: white;
+        }
+
+        .featured-overlay h3 {
+            margin: 5px 0;
+            font-size: 18px;
+        }
+
+        .featured-overlay p {
+            margin: 5px 0 15px;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .watch-button {
+            background-color: #03dac6;
+            color: #121212;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        /* Content categories */
+        .content-categories {
+            display: flex;
+            gap: 10px;
+            width: 95%;
+            max-width: 600px;
+            overflow-x: auto;
+            padding: 5px 0;
+            margin-bottom: 15px;
+            scrollbar-width: none;
+            /* Firefox */
+        }
+
+        .content-categories::-webkit-scrollbar {
+            display: none;
+            /* Chrome, Safari, Edge */
+        }
+
+        .category-button {
+            background-color: #2d2d2d;
+            color: #e0e0e0;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 16px;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+
+        .category-button.active {
+            background-color: #bb86fc;
+            color: #121212;
+        }
+
+        /* Content grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 15px;
+            width: 95%;
+            max-width: 600px;
+            margin-bottom: 80px;
+            /* Space for bottom nav */
+        }
+
+        .content-card {
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.2s ease;
+        }
+
+        .content-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .content-thumbnail {
+            position: relative;
+            height: 100px;
+        }
+
+        .content-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .content-tag {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            font-size: 10px;
+            font-weight: bold;
+            padding: 3px 6px;
+            border-radius: 4px;
+            z-index: 1;
+        }
+
+        .content-tag.live {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .content-tag.documentary {
+            background-color: #2196f3;
+            color: white;
+        }
+
+        .content-tag.vlog {
+            background-color: #4caf50;
+            color: white;
+        }
+
+        .content-tag.movie {
+            background-color: #ff9800;
+            color: white;
+        }
+
+        .content-duration {
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .content-info {
+            padding: 10px;
+        }
+
+        .content-info h4 {
+            margin: 0 0 5px 0;
+            font-size: 14px;
+            line-height: 1.3;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .content-creator {
+            margin: 0 0 3px 0;
+            font-size: 12px;
+            color: #bb86fc;
+        }
+
+        .content-views {
+            margin: 0;
+            font-size: 11px;
+            color: #888;
+        }
+
+        /* Media query for larger screens */
+        @media (min-width: 768px) {
+            .featured-carousel {
+                height: 250px;
+            }
+
+            .content-grid {
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            }
+        }
+
+        /* Connections styling */
+        #connections {
+            padding-top: 60px;
+        }
+
+        .section-intro {
+            text-align: center;
+            margin-bottom: 20px;
+            width: 90%;
+            color: #bbbbbb;
+        }
+
+        /* Search bar */
+        .search-container {
+            width: 95%;
+            max-width: 600px;
+            margin-bottom: 20px;
+        }
+
+        .search-bar {
+            background-color: #2d2d2d;
+            border-radius: 20px;
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-icon {
+            color: #888;
+            margin-right: 10px;
+        }
+
+        .search-bar input {
+            background: none;
+            border: none;
+            color: #e0e0e0;
+            width: 100%;
+            font-size: 16px;
+            outline: none;
+        }
+
+        /* Connection tabs */
+        .connection-tabs {
+            display: flex;
+            width: 95%;
+            max-width: 600px;
+            overflow-x: auto;
+            margin-bottom: 20px;
+            scrollbar-width: none;
+        }
+
+        .connection-tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .connection-tab {
+            background: none;
+            border: none;
+            color: #e0e0e0;
+            padding: 10px 15px;
+            font-size: 16px;
+            position: relative;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .connection-tab.active {
+            color: #bb86fc;
+        }
+
+        .connection-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 15%;
+            width: 70%;
+            height: 3px;
+            background-color: #bb86fc;
+            border-radius: 3px;
+        }
+
+        /* Connection sections */
+        .connection-section {
+            width: 95%;
+            max-width: 600px;
+            display: none;
+            margin-bottom: 80px;
+        }
+
+        .connection-section.active {
+            display: block;
+        }
+
+        .section-title {
+            margin: 0 0 15px 0;
+            font-size: 18px;
+            color: #e0e0e0;
+        }
+
+        /* Connection cards */
+        .connection-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        /* People cards */
+        .connection-card {
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .connection-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #2d4263;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .connection-avatar i {
+            font-size: 20px;
+            color: #03dac6;
+        }
+
+        .connection-info {
+            flex-grow: 1;
+        }
+
+        .connection-info h4 {
+            margin: 0 0 5px 0;
+            font-size: 16px;
+        }
+
+        .connection-detail {
+            margin: 0 0 5px 0;
+            font-size: 14px;
+            color: #bb86fc;
+        }
+
+        .connection-mutual {
+            margin: 0 0 8px 0;
+            font-size: 12px;
+            color: #888;
+        }
+
+        .connection-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .connection-tag {
+            background-color: #2d2d2d;
+            color: #03dac6;
+            font-size: 12px;
+            padding: 3px 8px;
+            border-radius: 12px;
+        }
+
+        .connect-button {
+            background-color: #2d2d2d;
+            color: #bb86fc;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 12px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+            flex-shrink: 0;
+        }
+
+        .connect-button:hover {
+            background-color: #3d3d3d;
+        }
+
+        /* Event cards */
+        .event-card {
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .event-date {
+            width: 50px;
+            height: 60px;
+            background-color: #bb86fc;
+            color: #121212;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .event-month {
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .event-day {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .event-info {
+            flex-grow: 1;
+        }
+
+        .event-info h4 {
+            margin: 0 0 5px 0;
+            font-size: 16px;
+        }
+
+        .event-location,
+        .event-time,
+        .event-attendees {
+            margin: 0 0 5px 0;
+            font-size: 13px;
+            color: #bbbbbb;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .event-button {
+            background-color: #03dac6;
+            color: #121212;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-left: 10px;
+            flex-shrink: 0;
+        }
+
+        /* Initiative cards */
+        .initiative-card {
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            align-items: flex-start;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .initiative-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #2d4263;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .initiative-icon i {
+            font-size: 20px;
+            color: #03dac6;
+        }
+
+        .initiative-info {
+            flex-grow: 1;
+        }
+
+        .initiative-info h4 {
+            margin: 0 0 5px 0;
+            font-size: 16px;
+        }
+
+        .initiative-org {
+            margin: 0 0 8px 0;
+            font-size: 14px;
+            color: #bb86fc;
+        }
+
+        .initiative-progress {
+            margin-bottom: 8px;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background-color: #2d2d2d;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 5px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: #03dac6;
+        }
+
+        .progress-text {
+            font-size: 12px;
+            color: #bbbbbb;
+        }
+
+        .initiative-description {
+            margin: 0;
+            font-size: 13px;
+            color: #e0e0e0;
+            line-height: 1.4;
+        }
+
+        .initiative-button {
+            background-color: #03dac6;
+            color: #121212;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-left: 10px;
+            flex-shrink: 0;
+        }
+
+        /* Company cards */
+        .company-connection-card {
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .company-logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #2d4263;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .company-logo i {
+            font-size: 20px;
+            color: #03dac6;
+        }
+
+        .company-info {
+            flex-grow: 1;
+        }
+
+        .company-info h4 {
+            margin: 0 0 5px 0;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .company-type {
+            margin: 0 0 5px 0;
+            font-size: 14px;
+            color: #bb86fc;
+        }
+
+        .company-followers {
+            margin: 0 0 8px 0;
+            font-size: 12px;
+            color: #888;
+        }
+
+        .company-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .company-tag {
+            background-color: #2d2d2d;
+            color: #03dac6;
+            font-size: 12px;
+            padding: 3px 8px;
+            border-radius: 12px;
+        }
+
+        .follow-button {
+            background-color: #bb86fc;
+            color: #121212;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-left: 10px;
+            flex-shrink: 0;
         }
     </style>
 </head>
@@ -374,8 +1162,8 @@
             <a href="#start-screen">Start</a>
         </div>
 
-        <div id="start-screen" class="screen">
-            <div class="nav-arrow" onclick="location.href='#hub'">←</div>
+        <div id="start-screen" class="screen active">
+            <div class="nav-arrow" onclick="showScreen('hub')">←</div>
             <header>
                 <h1>Start Screen</h1>
             </header>
@@ -405,26 +1193,307 @@
             </section>
         </div>
 
-        <div id="hub" class="screen" style="background-image: url('path/to/your/image2.jpg');">
-            <div class="nav-arrow" onclick="location.href='#start-screen'">←</div>
-            <h2>Hub</h2>
-            <p>Content for the Hub section.</p>
+        <div id="hub" class="screen">
+            <div class="nav-arrow" onclick="showScreen('start-screen')">←</div>
+            <h2>Impact Hub</h2>
+            <p class="section-intro">Discover inspiring content about positive environmental change</p>
+
+            <!-- Featured content carousel -->
+            <div class="featured-carousel">
+                <div class="featured-item active">
+                    <div class="featured-overlay">
+                        <span class="content-tag live">LIVE NOW</span>
+                        <h3>Ocean Cleanup Operation</h3>
+                        <p>Join the live stream of our Pacific garbage patch cleanup mission</p>
+                        <button class="watch-button"><i class="fas fa-play-circle"></i> Watch</button>
+                    </div>
+                    <img src="https://images.unsplash.com/photo-1621451537084-482c73073a0f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
+                        alt="Ocean Cleanup">
+                </div>
+            </div>
+
+            <!-- Content categories -->
+            <div class="content-categories">
+                <button class="category-button active">All</button>
+                <button class="category-button">Livestreams</button>
+                <button class="category-button">Documentaries</button>
+                <button class="category-button">Vlogs</button>
+                <button class="category-button">Movies</button>
+            </div>
+
+            <!-- Content grid -->
+            <div class="content-grid">
+                <!-- Livestream -->
+                <div class="content-card">
+                    <div class="content-thumbnail">
+                        <span class="content-tag live">LIVE</span>
+                        <img src="https://images.unsplash.com/photo-1516937941344-00b4e0337589?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80"
+                            alt="Rainforest Conservation">
+                        <div class="content-duration">LIVE</div>
+                    </div>
+                    <div class="content-info">
+                        <h4>Rainforest Conservation Efforts</h4>
+                        <p class="content-creator">By Conservation International</p>
+                        <p class="content-views">2.3K watching now</p>
+                    </div>
+                </div>
+
+                <!-- Documentary -->
+                <div class="content-card">
+                    <div class="content-thumbnail">
+                        <span class="content-tag documentary">DOCUMENTARY</span>
+                        <img src="https://images.unsplash.com/photo-1550358864-518f202c02ba?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80"
+                            alt="Coral Reef Restoration">
+                        <div class="content-duration">48:32</div>
+                    </div>
+                    <div class="content-info">
+                        <h4>Reviving Coral: The Great Barrier Reef Project</h4>
+                        <p class="content-creator">By Ocean Alliance</p>
+                        <p class="content-views">1.2M views • 2 weeks ago</p>
+                    </div>
+                </div>
+
+                <!-- Vlog -->
+                <div class="content-card">
+                    <div class="content-thumbnail">
+                        <span class="content-tag vlog">VLOG</span>
+                        <img src="https://images.unsplash.com/photo-1605600659873-d808a13e4d2a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80"
+                            alt="Zero Waste Home">
+                        <div class="content-duration">12:45</div>
+                    </div>
+                    <div class="content-info">
+                        <h4>My Zero Waste Home Tour</h4>
+                        <p class="content-creator">By Sustainable Sarah</p>
+                        <p class="content-views">458K views • 5 days ago</p>
+                    </div>
+                </div>
+
+                <!-- Movie -->
+                <div class="content-card">
+                    <div class="content-thumbnail">
+                        <span class="content-tag movie">MOVIE</span>
+                        <img src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80"
+                            alt="Wilderness">
+                        <div class="content-duration">1:42:15</div>
+                    </div>
+                    <div class="content-info">
+                        <h4>The Last Wilderness</h4>
+                        <p class="content-creator">By EcoFilms Productions</p>
+                        <p class="content-views">3.4M views • 1 month ago</p>
+                    </div>
+                </div>
+
+                <!-- Documentary -->
+                <div class="content-card">
+                    <div class="content-thumbnail">
+                        <span class="content-tag documentary">DOCUMENTARY</span>
+                        <img src="https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80"
+                            alt="Green Energy">
+                        <div class="content-duration">52:18</div>
+                    </div>
+                    <div class="content-info">
+                        <h4>Powering Tomorrow: The Renewable Revolution</h4>
+                        <p class="content-creator">By Future Energy Institute</p>
+                        <p class="content-views">876K views • 3 weeks ago</p>
+                    </div>
+                </div>
+
+                <!-- Vlog -->
+                <div class="content-card">
+                    <div class="content-thumbnail">
+                        <span class="content-tag vlog">VLOG</span>
+                        <img src="https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80"
+                            alt="Urban Garden">
+                        <div class="content-duration">18:22</div>
+                    </div>
+                    <div class="content-info">
+                        <h4>Building My Urban Rooftop Garden</h4>
+                        <p class="content-creator">By City Farmer Mike</p>
+                        <p class="content-views">245K views • 1 week ago</p>
+                    </div>
+                </div>
+
+                <!-- Livestream -->
+                <div class="content-card">
+                    <div class="content-thumbnail">
+                        <span class="content-tag live">LIVE</span>
+                        <img src="https://images.unsplash.com/photo-1500595046743-cd271d694d30?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80"
+                            alt="Wildlife Sanctuary">
+                        <div class="content-duration">LIVE</div>
+                    </div>
+                    <div class="content-info">
+                        <h4>Wildlife Sanctuary Cam: Elephant Habitat</h4>
+                        <p class="content-creator">By Global Wildlife Fund</p>
+                        <p class="content-views">5.7K watching now</p>
+                    </div>
+                </div>
+
+                <!-- Movie -->
+                <div class="content-card">
+                    <div class="content-thumbnail">
+                        <span class="content-tag movie">MOVIE</span>
+                        <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=884&q=80"
+                            alt="Ocean Life">
+                        <div class="content-duration">1:58:42</div>
+                    </div>
+                    <div class="content-info">
+                        <h4>Blue Planet: Unseen Depths</h4>
+                        <p class="content-creator">By Ocean Media</p>
+                        <p class="content-views">2.1M views • 2 months ago</p>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div id="certified" class="screen" style="background-image: url('path/to/your/image3.jpg');">
-            <div class="nav-arrow" onclick="location.href='#start-screen'">←</div>
+        <div id="certified" class="screen">
+            <div class="nav-arrow" onclick="showScreen('start-screen')">←</div>
             <h2>Certified Companies</h2>
-            <p>List of certified companies.</p>
+            <p class="section-intro">These companies have met our rigorous environmental and ethical standards.</p>
+
+            <div class="company-list">
+                <!-- Large Tech Company -->
+                <div class="company-card">
+                    <div class="company-logo">
+                        <i class="fas fa-leaf company-icon"></i>
+                    </div>
+                    <div class="company-info">
+                        <h3>EcoTech Solutions <i class="fas fa-check-circle verified-badge"></i></h3>
+                        <span class="company-type">Large Enterprise • Tech</span>
+                        <p>Carbon-neutral data centers and sustainable hardware manufacturing. Reduced emissions by 75%
+                            since 2018.</p>
+                        <div class="company-badges">
+                            <span class="badge"><i class="fas fa-recycle"></i> Zero Waste</span>
+                            <span class="badge"><i class="fas fa-solar-panel"></i> 100% Renewable</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Small Family Business -->
+                <div class="company-card">
+                    <div class="company-logo">
+                        <i class="fas fa-seedling company-icon"></i>
+                    </div>
+                    <div class="company-info">
+                        <h3>Green Family Farms <i class="fas fa-check-circle verified-badge"></i></h3>
+                        <span class="company-type">Small Business • Agriculture</span>
+                        <p>Family-owned organic farm using regenerative agriculture practices for three generations.</p>
+                        <div class="company-badges">
+                            <span class="badge"><i class="fas fa-tint"></i> Water Conservation</span>
+                            <span class="badge"><i class="fas fa-ban"></i> No Pesticides</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Innovative Startup -->
+                <div class="company-card">
+                    <div class="company-logo">
+                        <i class="fas fa-lightbulb company-icon"></i>
+                    </div>
+                    <div class="company-info">
+                        <h3>BioCycle Innovations <i class="fas fa-check-circle verified-badge"></i></h3>
+                        <span class="company-type">Startup • Biotech</span>
+                        <p>Pioneering biodegradable alternatives to plastics using mushroom mycelium and agricultural
+                            waste.</p>
+                        <div class="company-badges">
+                            <span class="badge"><i class="fas fa-flask"></i> Innovative</span>
+                            <span class="badge"><i class="fas fa-trash-alt"></i> Plastic Alternative</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Manufacturing Company -->
+                <div class="company-card">
+                    <div class="company-logo">
+                        <i class="fas fa-industry company-icon"></i>
+                    </div>
+                    <div class="company-info">
+                        <h3>SustainaBuild <i class="fas fa-check-circle verified-badge"></i></h3>
+                        <span class="company-type">Medium Enterprise • Manufacturing</span>
+                        <p>Construction materials made from recycled content. Closed-loop manufacturing process with
+                            zero landfill waste.</p>
+                        <div class="company-badges">
+                            <span class="badge"><i class="fas fa-recycle"></i> Circular Economy</span>
+                            <span class="badge"><i class="fas fa-building"></i> LEED Certified</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Service Company -->
+                <div class="company-card">
+                    <div class="company-logo">
+                        <i class="fas fa-tshirt company-icon"></i>
+                    </div>
+                    <div class="company-info">
+                        <h3>EthiCloth <i class="fas fa-check-circle verified-badge"></i></h3>
+                        <span class="company-type">Small Business • Fashion</span>
+                        <p>Ethical clothing brand using organic cotton and providing fair wages throughout their supply
+                            chain.</p>
+                        <div class="company-badges">
+                            <span class="badge"><i class="fas fa-users"></i> Fair Trade</span>
+                            <span class="badge"><i class="fas fa-hand-holding-heart"></i> Community Support</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Energy Company -->
+                <div class="company-card">
+                    <div class="company-logo">
+                        <i class="fas fa-solar-panel company-icon"></i>
+                    </div>
+                    <div class="company-info">
+                        <h3>SunStream Energy <i class="fas fa-check-circle verified-badge"></i></h3>
+                        <span class="company-type">Large Enterprise • Energy</span>
+                        <p>Affordable renewable energy solutions for homes and businesses. Pioneering community solar
+                            projects.</p>
+                        <div class="company-badges">
+                            <span class="badge"><i class="fas fa-sun"></i> Solar Provider</span>
+                            <span class="badge"><i class="fas fa-battery-full"></i> Storage Solutions</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Food Company -->
+                <div class="company-card">
+                    <div class="company-logo">
+                        <i class="fas fa-utensils company-icon"></i>
+                    </div>
+                    <div class="company-info">
+                        <h3>NutriEarth Foods <i class="fas fa-check-circle verified-badge"></i></h3>
+                        <span class="company-type">Medium Enterprise • Food</span>
+                        <p>Plant-based food company with compostable packaging and carbon-neutral operations.</p>
+                        <div class="company-badges">
+                            <span class="badge"><i class="fas fa-leaf"></i> Plant-Based</span>
+                            <span class="badge"><i class="fas fa-box"></i> Eco Packaging</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Transportation -->
+                <div class="company-card">
+                    <div class="company-logo">
+                        <i class="fas fa-bicycle company-icon"></i>
+                    </div>
+                    <div class="company-info">
+                        <h3>GreenCommute <i class="fas fa-check-circle verified-badge"></i></h3>
+                        <span class="company-type">Startup • Transportation</span>
+                        <p>Electric bike sharing and sustainable urban mobility solutions for smart cities.</p>
+                        <div class="company-badges">
+                            <span class="badge"><i class="fas fa-charging-station"></i> Electric</span>
+                            <span class="badge"><i class="fas fa-city"></i> Urban Mobility</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div id="original" class="screen" style="background-image: url('path/to/your/image4.jpg');">
-            <div class="nav-arrow" onclick="location.href='#start-screen'">←</div>
+        <div id="original" class="screen">
+            <div class="nav-arrow" onclick="showScreen('start-screen')">←</div>
             <h2>Original Content</h2>
             <p>Content for Original Content section.</p>
         </div>
 
-        <div id="community" class="screen" style="background-image: url('path/to/your/image5.jpg');">
-            <div class="nav-arrow" onclick="location.href='#start-screen'">←</div>
+        <div id="community" class="screen">
+            <div class="nav-arrow" onclick="showScreen('start-screen')">←</div>
             <h2>Community</h2>
 
             <!-- Add post creation form -->
@@ -546,68 +1615,401 @@
             </div>
         </div>
 
-        <div id="connections" class="screen" style="background-image: url('path/to/your/image6.jpg');">
-            <div class="nav-arrow" onclick="location.href='#start-screen'">←</div>
+        <div id="connections" class="screen">
+            <div class="nav-arrow" onclick="showScreen('start-screen')">←</div>
             <h2>Connections</h2>
-            <p>Explore connections here.</p>
+            <p class="section-intro">Discover people, events, and initiatives aligned with your environmental interests
+            </p>
+
+            <!-- Search bar -->
+            <div class="search-container">
+                <div class="search-bar">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" placeholder="Search for people, events, or initiatives...">
+                </div>
+            </div>
+
+            <!-- Connection categories -->
+            <div class="connection-tabs">
+                <button class="connection-tab active">People</button>
+                <button class="connection-tab">Events</button>
+                <button class="connection-tab">Initiatives</button>
+                <button class="connection-tab">Companies</button>
+            </div>
+
+            <!-- People suggestions -->
+            <div class="connection-section active" id="people-section">
+                <h3 class="section-title">People You May Know</h3>
+
+                <div class="connection-cards">
+                    <!-- Person 1 -->
+                    <div class="connection-card">
+                        <div class="connection-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="connection-info">
+                            <h4>Dr. Maya Chen</h4>
+                            <p class="connection-detail">Renewable Energy Researcher</p>
+                            <p class="connection-mutual"><i class="fas fa-user-friends"></i> 3 mutual connections</p>
+                            <div class="connection-tags">
+                                <span class="connection-tag">Solar Energy</span>
+                                <span class="connection-tag">Climate Science</span>
+                            </div>
+                        </div>
+                        <button class="connect-button"><i class="fas fa-plus"></i> Connect</button>
+                    </div>
+
+                    <!-- Person 2 -->
+                    <div class="connection-card">
+                        <div class="connection-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="connection-info">
+                            <h4>James Wilson</h4>
+                            <p class="connection-detail">Urban Farming Advocate</p>
+                            <p class="connection-mutual"><i class="fas fa-user-friends"></i> 5 mutual connections</p>
+                            <div class="connection-tags">
+                                <span class="connection-tag">Food Security</span>
+                                <span class="connection-tag">Community Gardens</span>
+                            </div>
+                        </div>
+                        <button class="connect-button"><i class="fas fa-plus"></i> Connect</button>
+                    </div>
+
+                    <!-- Person 3 -->
+                    <div class="connection-card">
+                        <div class="connection-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="connection-info">
+                            <h4>Sophia Rodriguez</h4>
+                            <p class="connection-detail">Sustainable Fashion Designer</p>
+                            <p class="connection-mutual"><i class="fas fa-user-friends"></i> 2 mutual connections</p>
+                            <div class="connection-tags">
+                                <span class="connection-tag">Ethical Fashion</span>
+                                <span class="connection-tag">Upcycling</span>
+                            </div>
+                        </div>
+                        <button class="connect-button"><i class="fas fa-plus"></i> Connect</button>
+                    </div>
+
+                    <!-- Person 4 -->
+                    <div class="connection-card">
+                        <div class="connection-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="connection-info">
+                            <h4>Aiden Patel</h4>
+                            <p class="connection-detail">Green Tech Entrepreneur</p>
+                            <p class="connection-mutual"><i class="fas fa-user-friends"></i> 7 mutual connections</p>
+                            <div class="connection-tags">
+                                <span class="connection-tag">Clean Energy</span>
+                                <span class="connection-tag">Startups</span>
+                            </div>
+                        </div>
+                        <button class="connect-button"><i class="fas fa-plus"></i> Connect</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Events suggestions (initially hidden) -->
+            <div class="connection-section" id="events-section">
+                <h3 class="section-title">Upcoming Events Near You</h3>
+
+                <div class="connection-cards">
+                    <!-- Event 1 -->
+                    <div class="event-card">
+                        <div class="event-date">
+                            <div class="event-month">JUN</div>
+                            <div class="event-day">15</div>
+                        </div>
+                        <div class="event-info">
+                            <h4>Community Solar Workshop</h4>
+                            <p class="event-location"><i class="fas fa-map-marker-alt"></i> Green Tech Hub, Downtown</p>
+                            <p class="event-time"><i class="far fa-clock"></i> 2:00 PM - 5:00 PM</p>
+                            <p class="event-attendees"><i class="fas fa-users"></i> 34 people attending</p>
+                        </div>
+                        <button class="event-button">Attend</button>
+                    </div>
+
+                    <!-- Event 2 -->
+                    <div class="event-card">
+                        <div class="event-date">
+                            <div class="event-month">JUN</div>
+                            <div class="event-day">22</div>
+                        </div>
+                        <div class="event-info">
+                            <h4>Riverside Cleanup Day</h4>
+                            <p class="event-location"><i class="fas fa-map-marker-alt"></i> Riverfront Park</p>
+                            <p class="event-time"><i class="far fa-clock"></i> 9:00 AM - 12:00 PM</p>
+                            <p class="event-attendees"><i class="fas fa-users"></i> 78 people attending</p>
+                        </div>
+                        <button class="event-button">Attend</button>
+                    </div>
+
+                    <!-- Event 3 -->
+                    <div class="event-card">
+                        <div class="event-date">
+                            <div class="event-month">JUL</div>
+                            <div class="event-day">05</div>
+                        </div>
+                        <div class="event-info">
+                            <h4>Sustainable Home Energy Fair</h4>
+                            <p class="event-location"><i class="fas fa-map-marker-alt"></i> City Convention Center</p>
+                            <p class="event-time"><i class="far fa-clock"></i> 10:00 AM - 4:00 PM</p>
+                            <p class="event-attendees"><i class="fas fa-users"></i> 125 people attending</p>
+                        </div>
+                        <button class="event-button">Attend</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Initiatives suggestions (initially hidden) -->
+            <div class="connection-section" id="initiatives-section">
+                <h3 class="section-title">Initiatives You Can Join</h3>
+
+                <div class="connection-cards">
+                    <!-- Initiative 1 -->
+                    <div class="initiative-card">
+                        <div class="initiative-icon">
+                            <i class="fas fa-seedling"></i>
+                        </div>
+                        <div class="initiative-info">
+                            <h4>Urban Tree Planting Project</h4>
+                            <p class="initiative-org">By: City Green Alliance</p>
+                            <div class="initiative-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 65%"></div>
+                                </div>
+                                <span class="progress-text">65% to goal (650/1000 trees)</span>
+                            </div>
+                            <p class="initiative-description">Help increase urban tree canopy by planting trees in
+                                neighborhoods with low green coverage.</p>
+                        </div>
+                        <button class="initiative-button">Join</button>
+                    </div>
+
+                    <!-- Initiative 2 -->
+                    <div class="initiative-card">
+                        <div class="initiative-icon">
+                            <i class="fas fa-solar-panel"></i>
+                        </div>
+                        <div class="initiative-info">
+                            <h4>Community Solar Co-op</h4>
+                            <p class="initiative-org">By: Renewable Neighbors</p>
+                            <div class="initiative-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 42%"></div>
+                                </div>
+                                <span class="progress-text">42% to goal (84/200 members)</span>
+                            </div>
+                            <p class="initiative-description">Join our cooperative to install shared solar panels and
+                                distribute clean energy to members.</p>
+                        </div>
+                        <button class="initiative-button">Join</button>
+                    </div>
+
+                    <!-- Initiative 3 -->
+                    <div class="initiative-card">
+                        <div class="initiative-icon">
+                            <i class="fas fa-recycle"></i>
+                        </div>
+                        <div class="initiative-info">
+                            <h4>Zero Waste Challenge</h4>
+                            <p class="initiative-org">By: EcoLifestyle Network</p>
+                            <div class="initiative-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 78%"></div>
+                                </div>
+                                <span class="progress-text">78% to goal (1560/2000 participants)</span>
+                            </div>
+                            <p class="initiative-description">30-day challenge to reduce household waste through simple
+                                daily actions and community support.</p>
+                        </div>
+                        <button class="initiative-button">Join</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Companies suggestions (initially hidden) -->
+            <div class="connection-section" id="companies-section">
+                <h3 class="section-title">Companies To Follow</h3>
+
+                <div class="connection-cards">
+                    <!-- Company 1 -->
+                    <div class="company-connection-card">
+                        <div class="company-logo">
+                            <i class="fas fa-charging-station"></i>
+                        </div>
+                        <div class="company-info">
+                            <h4>ElectriCharge Networks <i class="fas fa-check-circle verified-badge"></i></h4>
+                            <p class="company-type">EV Charging Infrastructure</p>
+                            <p class="company-followers"><i class="fas fa-user-friends"></i> 12.5K followers</p>
+                            <div class="company-tags">
+                                <span class="company-tag">Electric Mobility</span>
+                                <span class="company-tag">Smart Grid</span>
+                            </div>
+                        </div>
+                        <button class="follow-button">Follow</button>
+                    </div>
+
+                    <!-- Company 2 -->
+                    <div class="company-connection-card">
+                        <div class="company-logo">
+                            <i class="fas fa-water"></i>
+                        </div>
+                        <div class="company-info">
+                            <h4>AquaPure Technologies <i class="fas fa-check-circle verified-badge"></i></h4>
+                            <p class="company-type">Water Conservation Solutions</p>
+                            <p class="company-followers"><i class="fas fa-user-friends"></i> 8.3K followers</p>
+                            <div class="company-tags">
+                                <span class="company-tag">Clean Water</span>
+                                <span class="company-tag">Resource Efficiency</span>
+                            </div>
+                        </div>
+                        <button class="follow-button">Follow</button>
+                    </div>
+
+                    <!-- Company 3 -->
+                    <div class="company-connection-card">
+                        <div class="company-logo">
+                            <i class="fas fa-laptop-code"></i>
+                        </div>
+                        <div class="company-info">
+                            <h4>GreenCode Solutions <i class="fas fa-check-circle verified-badge"></i></h4>
+                            <p class="company-type">Sustainable Software Development</p>
+                            <p class="company-followers"><i class="fas fa-user-friends"></i> 5.7K followers</p>
+                            <div class="company-tags">
+                                <span class="company-tag">Green IT</span>
+                                <span class="company-tag">Energy Efficient</span>
+                            </div>
+                        </div>
+                        <button class="follow-button">Follow</button>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Bottom Navigation Bar -->
         <nav class="bottom-nav">
-            <a href="#hub" class="nav-button">
+            <a href="javascript:void(0)" class="nav-button" onclick="showScreen('hub')">
                 <i class="fas fa-home"></i>
                 <span>Hub</span>
             </a>
-            <a href="#certified" class="nav-button">
+            <a href="javascript:void(0)" class="nav-button" onclick="showScreen('certified')">
                 <i class="fas fa-building"></i>
                 <span>Certified</span>
             </a>
-            <a href="#community" class="nav-button">
+            <a href="javascript:void(0)" class="nav-button" onclick="showScreen('community')">
                 <i class="fas fa-users"></i>
                 <span>Community</span>
             </a>
-            <a href="#connections" class="nav-button">
+            <a href="javascript:void(0)" class="nav-button" onclick="showScreen('connections')">
                 <i class="fas fa-link"></i>
                 <span>Connections</span>
             </a>
         </nav>
     </div>
 
-    <!-- Script to highlight active navigation button -->
+    <!-- Script to handle tab navigation -->
     <script>
-        // Update active nav button based on current section
-        window.addEventListener('hashchange', updateActiveNav);
-        window.addEventListener('load', updateActiveNav);
+        // Function to show a specific screen
+        function showScreen(screenId) {
+            // Hide all screens
+            const screens = document.querySelectorAll('.screen');
+            screens.forEach(screen => {
+                screen.classList.remove('active');
+            });
 
-        function updateActiveNav() {
-            const currentHash = window.location.hash || '#start-screen';
+            // Show the selected screen
+            const activeScreen = document.getElementById(screenId);
+            if (activeScreen) {
+                activeScreen.classList.add('active');
+
+                // Update active nav button
+                updateActiveNav(screenId);
+
+                // Initialize Earth if showing start screen
+                if (screenId === 'start-screen') {
+                    const container = document.getElementById('earth-container');
+                    if (container && !container.querySelector('canvas')) {
+                        setTimeout(initEarth, 100);
+                    }
+                }
+
+                // Update URL hash without scrolling
+                history.replaceState(null, null, '#' + screenId);
+            }
+        }
+
+        // Update active nav button
+        function updateActiveNav(screenId) {
             const navButtons = document.querySelectorAll('.nav-button');
 
             navButtons.forEach(button => {
-                if (button.getAttribute('href') === currentHash) {
+                // Extract the target screen from the onclick attribute
+                const onclickAttr = button.getAttribute('onclick');
+                const targetScreen = onclickAttr ? onclickAttr.match(/showScreen\('(.+?)'\)/)[1] : null;
+
+                if (targetScreen === screenId) {
                     button.classList.add('active');
                 } else {
                     button.classList.remove('active');
                 }
             });
         }
+
+        // Handle initial load and back/forward navigation
+        window.addEventListener('load', function () {
+            const hash = window.location.hash.substring(1) || 'start-screen';
+            showScreen(hash);
+        });
+
+        window.addEventListener('hashchange', function () {
+            const hash = window.location.hash.substring(1) || 'start-screen';
+            showScreen(hash);
+        });
+
+        // Prevent default scroll behavior
+        document.body.addEventListener('touchmove', function (e) {
+            // Allow scrolling within screens but not between them
+            if (!e.target.closest('.screen')) {
+                e.preventDefault();
+            }
+        }, { passive: false });
     </script>
 
-    <!-- Add Earth.js script -->
+    <!-- Earth.js script -->
     <script>
         // Initialize Three.js Earth
         function initEarth() {
+            // Only initialize if the start screen is visible
+            if (!document.getElementById('start-screen').classList.contains('active')) {
+                return;
+            }
+
             // Create scene
             const scene = new THREE.Scene();
 
-            // Create camera - adjusted for larger Earth
+            // Create camera
             const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
-            camera.position.z = 2.2;  // Adjusted camera position for larger view
+            camera.position.z = 2.2;
 
-            // Create renderer
+            // Create renderer with mobile optimizations
             const container = document.getElementById('earth-container');
-            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            const renderer = new THREE.WebGLRenderer({
+                antialias: false, // Disable antialiasing on mobile for performance
+                alpha: true,
+                powerPreference: 'high-performance'
+            });
+
+            // Set size and pixel ratio based on device
             renderer.setSize(container.clientWidth, container.clientHeight);
+
+            // Limit pixel ratio for performance on mobile
+            const pixelRatio = Math.min(window.devicePixelRatio, 2);
+            renderer.setPixelRatio(pixelRatio);
+
             container.appendChild(renderer.domElement);
 
             // Add ambient light
@@ -619,13 +2021,21 @@
             directionalLight.position.set(5, 3, 5);
             scene.add(directionalLight);
 
-            // Create earth
-            const earthGeometry = new THREE.SphereGeometry(1, 32, 32);
+            // Create earth with appropriate polygon count
+            const isMobile = window.innerWidth < 768;
+            const segmentDetail = isMobile ? 32 : 64; // Lower detail on mobile
 
-            // Load earth texture
+            const earthGeometry = new THREE.SphereGeometry(1, segmentDetail, segmentDetail);
+
+            // Load textures
             const textureLoader = new THREE.TextureLoader();
+
+            // Use appropriate resolution textures based on device
+            const textureQuality = isMobile ? '2048' : '8192';
+
+            // These fallback to standard resolution to ensure performance
             const earthTexture = textureLoader.load('https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/earth_atmos_2048.jpg');
-            const bumpMap = textureLoader.load('https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/earth_atmos_2048.jpg');
+            const bumpMap = textureLoader.load('https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/earth_normal_2048.jpg');
             const specularMap = textureLoader.load('https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/earth_specular_2048.jpg');
 
             // Create material with textures
@@ -642,8 +2052,8 @@
             const earth = new THREE.Mesh(earthGeometry, earthMaterial);
             scene.add(earth);
 
-            // Add clouds
-            const cloudGeometry = new THREE.SphereGeometry(1.01, 32, 32);
+            // Add clouds with appropriate detail
+            const cloudGeometry = new THREE.SphereGeometry(1.02, segmentDetail, segmentDetail);
             const cloudTexture = textureLoader.load('https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/earth_clouds_1024.png');
             const cloudMaterial = new THREE.MeshPhongMaterial({
                 map: cloudTexture,
@@ -654,71 +2064,105 @@
             const clouds = new THREE.Mesh(cloudGeometry, cloudMaterial);
             scene.add(clouds);
 
-            // Add orbit controls
+            // Add orbit controls with mobile-friendly settings
             const controls = new THREE.OrbitControls(camera, renderer.domElement);
             controls.enableDamping = true;
-            controls.dampingFactor = 0.05;
-            controls.rotateSpeed = 0.5;
+            controls.dampingFactor = 0.1; // More responsive damping for touch
+            controls.rotateSpeed = 0.7; // Faster rotation for better touch response
+            controls.panSpeed = 0.8; // Faster panning
             controls.minDistance = 1.2;
             controls.maxDistance = 4;
+            controls.enableZoom = true;
+            controls.zoomSpeed = 1.2; // Faster zoom for mobile
+            controls.touches = {
+                ONE: THREE.TOUCH.ROTATE,
+                TWO: THREE.TOUCH.DOLLY_PAN
+            };
 
-            // Animation loop
-            function animate() {
+            // Animation loop with performance considerations
+            let lastTime = 0;
+            const rotationSpeed = isMobile ? 0.0003 : 0.0005; // Slower rotation on mobile
+
+            function animate(time) {
                 requestAnimationFrame(animate);
 
-                // Slowly rotate earth and clouds
-                earth.rotation.y += 0.0005;
-                clouds.rotation.y += 0.0007;
+                // Calculate delta time for smoother animation
+                const delta = time - lastTime;
+                lastTime = time;
 
-                // Update controls
-                controls.update();
+                // Only update rotation and render if visible in viewport
+                const rect = container.getBoundingClientRect();
+                if (
+                    rect.bottom >= 0 &&
+                    rect.top <= window.innerHeight
+                ) {
+                    // Slowly rotate earth and clouds
+                    earth.rotation.y += rotationSpeed * delta;
+                    clouds.rotation.y += rotationSpeed * 1.4 * delta;
 
-                // Render scene
-                renderer.render(scene, camera);
+                    // Update controls
+                    controls.update();
+
+                    // Render scene
+                    renderer.render(scene, camera);
+                }
             }
 
             // Handle window resize
             window.addEventListener('resize', function () {
-                // Only update if container exists
                 if (container.clientWidth) {
                     camera.aspect = 1; // Keep aspect ratio 1:1
                     camera.updateProjectionMatrix();
                     renderer.setSize(container.clientWidth, container.clientHeight);
+                    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
                 }
             });
 
+            // Handle device orientation for mobile
+            if (window.DeviceOrientationEvent && 'ontouchstart' in window) {
+                window.addEventListener('deviceorientation', function (event) {
+                    // Only apply if user isn't actively touching the screen
+                    if (document.querySelectorAll('.touching').length === 0) {
+                        // Subtle rotation based on device tilt
+                        const tiltX = event.beta ? event.beta * 0.01 : 0;
+                        const tiltY = event.gamma ? event.gamma * 0.01 : 0;
+
+                        earth.rotation.x = THREE.MathUtils.lerp(earth.rotation.x, tiltX, 0.05);
+                        earth.rotation.y += rotationSpeed + (tiltY * 0.01);
+                    }
+                });
+
+                // Track touch state
+                container.addEventListener('touchstart', function () {
+                    container.classList.add('touching');
+                });
+
+                container.addEventListener('touchend', function () {
+                    container.classList.remove('touching');
+                });
+            }
+
             // Start animation
-            animate();
+            animate(0);
         }
-
-        // Initialize Earth when page loads
-        window.addEventListener('load', function () {
-            // Only initialize if we're on the start screen
-            if (window.location.hash === '' || window.location.hash === '#start-screen') {
-                initEarth();
-            }
-        });
-
-        // Initialize Earth when navigating to start screen
-        window.addEventListener('hashchange', function () {
-            if (window.location.hash === '' || window.location.hash === '#start-screen') {
-                // Check if earth already exists
-                const container = document.getElementById('earth-container');
-                if (!container.querySelector('canvas')) {
-                    initEarth();
-                }
-            }
-        });
     </script>
 
-    <!-- Add JavaScript for post creation -->
+    <!-- Post creation script -->
     <script>
-        // Post creation functionality
         document.addEventListener('DOMContentLoaded', function () {
             const postButton = document.querySelector('.post-button');
             const postTextarea = document.querySelector('.post-form textarea');
             const newsFeed = document.querySelector('.news-feed');
 
+            // Improve textarea experience on mobile
+            postTextarea.addEventListener('focus', function () {
+                // Scroll to make sure the textarea is visible when keyboard opens
+                setTimeout(function () {
+                    postTextarea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 300);
+            });
+
+            // Handle post creation
             postButton.addEventListener('click', function () {
                 const postContent = postTextarea.value.trim();
                 if (postContent) {
@@ -756,7 +2200,77 @@
 
                     // Clear the textarea
                     postTextarea.value = '';
+
+                    // Hide mobile keyboard
+                    postTextarea.blur();
                 }
+            });
+
+            // Add touch interaction to post actions
+            document.addEventListener('click', function (e) {
+                if (e.target.closest('.post-action')) {
+                    const action = e.target.closest('.post-action');
+
+                    // Simple heart count increment
+                    if (action.innerHTML.includes('fa-heart')) {
+                        const countEl = action.innerHTML.match(/\d+/);
+                        if (countEl) {
+                            const count = parseInt(countEl[0]) + 1;
+                            action.innerHTML = action.innerHTML.replace(/\d+/, count);
+
+                            // Visual feedback
+                            action.style.color = '#03dac6';
+                            setTimeout(() => {
+                                action.style.color = '';
+                            }, 500);
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+
+    <!-- Tab switching functionality -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const tabs = document.querySelectorAll('.connection-tab');
+            const sections = document.querySelectorAll('.connection-section');
+
+            tabs.forEach((tab, index) => {
+                tab.addEventListener('click', function () {
+                    // Remove active class from all tabs and sections
+                    tabs.forEach(t => t.classList.remove('active'));
+                    sections.forEach(s => s.classList.remove('active'));
+
+                    // Add active class to clicked tab and corresponding section
+                    tab.classList.add('active');
+                    sections[index].classList.add('active');
+                });
+            });
+
+            // Button interactions
+            const connectButtons = document.querySelectorAll('.connect-button, .follow-button, .event-button, .initiative-button');
+
+            connectButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const originalText = this.innerHTML;
+
+                    if (this.classList.contains('connect-button')) {
+                        this.innerHTML = '<i class="fas fa-check"></i> Connected';
+                        this.style.backgroundColor = '#03dac6';
+                        this.style.color = '#121212';
+                    } else if (this.classList.contains('follow-button')) {
+                        this.innerHTML = 'Following';
+                        this.style.backgroundColor = '#03dac6';
+                    } else if (this.classList.contains('event-button')) {
+                        this.innerHTML = 'Attending';
+                    } else if (this.classList.contains('initiative-button')) {
+                        this.innerHTML = 'Joined';
+                    }
+
+                    // Prevent multiple clicks
+                    this.disabled = true;
+                });
             });
         });
     </script>
