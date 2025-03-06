@@ -3453,58 +3453,130 @@
     </script>
 
     <script>
-        // Add this to your existing script section
+        // Fix for touch event handling issues
         document.addEventListener('DOMContentLoaded', function () {
-            const highlightedCards = document.querySelector('.highlighted-cards');
-            const paginationDots = document.querySelectorAll('.pagination-dot');
-            let currentIndex = 0;
-            let startX, moveX;
+            // 1. Improve tab switching functionality
+            const connectionTabs = document.querySelectorAll('.connection-tab');
+            const connectionSections = document.querySelectorAll('.connection-section');
 
-            // Touch events for swiping
-            highlightedCards.addEventListener('touchstart', function (e) {
-                startX = e.touches[0].clientX;
-                moveX = 0;
-            });
-
-            highlightedCards.addEventListener('touchmove', function (e) {
-                moveX = e.touches[0].clientX - startX;
-                // Prevent default to stop page scrolling while swiping cards
-                if (Math.abs(moveX) > 10) {
+            connectionTabs.forEach((tab, index) => {
+                tab.addEventListener('click', function (e) {
+                    // Prevent any default behavior
                     e.preventDefault();
-                }
-            }, { passive: false });
+                    e.stopPropagation();
 
-            highlightedCards.addEventListener('touchend', function () {
-                if (moveX < -50 && currentIndex < 2) { // Swipe left
-                    currentIndex++;
-                    updateCardPosition();
-                } else if (moveX > 50 && currentIndex > 0) { // Swipe right
-                    currentIndex--;
-                    updateCardPosition();
-                }
-            });
+                    // Remove active class from all tabs and sections
+                    connectionTabs.forEach(t => t.classList.remove('active'));
+                    connectionSections.forEach(s => s.classList.remove('active'));
 
-            // Click events for pagination dots
-            paginationDots.forEach((dot, index) => {
-                dot.addEventListener('click', function () {
-                    currentIndex = index;
-                    updateCardPosition();
-                });
-            });
-
-            function updateCardPosition() {
-                // Update card position
-                highlightedCards.style.transform = `translateX(-${currentIndex * 33.333}%)`;
-
-                // Update pagination dots
-                paginationDots.forEach((dot, index) => {
-                    if (index === currentIndex) {
-                        dot.classList.add('active');
-                    } else {
-                        dot.classList.remove('active');
+                    // Add active class to clicked tab and corresponding section
+                    this.classList.add('active');
+                    if (connectionSections[index]) {
+                        connectionSections[index].classList.add('active');
                     }
+
+                    // Force a small layout recalculation to prevent UI freezing
+                    setTimeout(() => {
+                        window.scrollBy(0, 1);
+                        window.scrollBy(0, -1);
+                    }, 10);
                 });
+            });
+
+            // 2. Fix for swipe functionality in highlighted cards
+            const highlightedCards = document.querySelector('.highlighted-cards');
+            if (highlightedCards) {
+                const paginationDots = document.querySelectorAll('.pagination-dot');
+                let currentIndex = 0;
+                let startX, moveX;
+                let isSwiping = false;
+
+                // Improved touch event handling
+                highlightedCards.addEventListener('touchstart', function (e) {
+                    startX = e.touches[0].clientX;
+                    moveX = 0;
+                    isSwiping = true;
+                }, { passive: true }); // Use passive listener for better performance
+
+                highlightedCards.addEventListener('touchmove', function (e) {
+                    if (!isSwiping) return;
+                    moveX = e.touches[0].clientX - startX;
+
+                    // Only prevent default if horizontal swipe is significant
+                    // This allows vertical scrolling to still work
+                    if (Math.abs(moveX) > Math.abs(e.touches[0].clientY - e.touches[0].clientY) && Math.abs(moveX) > 10) {
+                        e.preventDefault();
+                    }
+                }, { passive: false });
+
+                highlightedCards.addEventListener('touchend', function (e) {
+                    if (!isSwiping) return;
+                    isSwiping = false;
+
+                    if (moveX < -50 && currentIndex < 2) { // Swipe left
+                        currentIndex++;
+                        updateCardPosition();
+                    } else if (moveX > 50 && currentIndex > 0) { // Swipe right
+                        currentIndex--;
+                        updateCardPosition();
+                    }
+
+                    // Force release any stuck touches
+                    e.preventDefault();
+                    e.stopPropagation();
+                });
+
+                // Add touchcancel handler to reset state
+                highlightedCards.addEventListener('touchcancel', function () {
+                    isSwiping = false;
+                }, { passive: true });
+
+                // Click events for pagination dots with improved handling
+                paginationDots.forEach((dot, index) => {
+                    dot.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        currentIndex = index;
+                        updateCardPosition();
+                    });
+                });
+
+                function updateCardPosition() {
+                    // Use requestAnimationFrame for smoother animations
+                    requestAnimationFrame(() => {
+                        highlightedCards.style.transform = `translateX(-${currentIndex * 33.333}%)`;
+
+                        // Update pagination dots
+                        paginationDots.forEach((dot, index) => {
+                            if (index === currentIndex) {
+                                dot.classList.add('active');
+                            } else {
+                                dot.classList.remove('active');
+                            }
+                        });
+                    });
+                }
             }
+
+            // 3. General fix for any buttons that might be causing issues
+            const allButtons = document.querySelectorAll('button');
+            allButtons.forEach(button => {
+                button.addEventListener('touchend', function (e) {
+                    // Prevent ghost clicks
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    // Trigger click after a small delay
+                    setTimeout(() => {
+                        this.click();
+                    }, 10);
+                }, { passive: false });
+            });
+
+            // 4. Add error handling to catch and log any JS errors
+            window.addEventListener('error', function (e) {
+                console.error('JS Error:', e.message, 'at', e.filename, ':', e.lineno);
+            });
         });
     </script>
 </body>
