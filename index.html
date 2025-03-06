@@ -1588,7 +1588,7 @@
 
         <div id="hub" class="screen">
             <div class="nav-arrow" onclick="showScreen('start-screen')">←</div>
-            <h2>Impact Hub</h2>
+
             <p class="section-intro">Discover inspiring content about positive environmental change</p>
 
             <!-- Featured content carousel -->
@@ -2431,6 +2431,9 @@
 
                 // Update URL hash without scrolling
                 history.replaceState(null, null, '#' + screenId);
+
+                // Ensure screen is scrollable (add this)
+                document.body.style.overflow = 'auto';
             }
         }
 
@@ -2462,13 +2465,18 @@
             showScreen(hash);
         });
 
-        // Prevent default scroll behavior
+        // REMOVE this event listener that was preventing scroll
+        // document.body.addEventListener('touchmove', function (e) {
+        //     if (!e.target.closest('.screen')) {
+        //         e.preventDefault();
+        //     }
+        // }, { passive: false });
+
+        // Add this instead if you need any touch handling
         document.body.addEventListener('touchmove', function (e) {
-            // Allow scrolling within screens but not between them
-            if (!e.target.closest('.screen')) {
-                e.preventDefault();
-            }
-        }, { passive: false });
+            // Allow default scrolling in all cases
+            // Only prevent default for specific UI elements if needed
+        }, { passive: true });  // passive: true improves scroll performance
     </script>
 
     <!-- Earth.js script -->
