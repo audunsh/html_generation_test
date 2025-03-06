@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Atlas</title>
     <link rel="stylesheet" href="style.css">
     <!-- Add Font Awesome -->
@@ -2410,15 +2410,24 @@
     <script>
         // Function to show a specific screen
         function showScreen(screenId) {
+            // Prevent any ongoing transitions or animations
+            document.body.classList.add('switching-screen');
+
             // Hide all screens
             const screens = document.querySelectorAll('.screen');
             screens.forEach(screen => {
                 screen.classList.remove('active');
+                screen.style.display = 'none'; // Explicitly set display none
             });
 
             // Show the selected screen
             const activeScreen = document.getElementById(screenId);
             if (activeScreen) {
+                activeScreen.style.display = 'block'; // Explicitly set display block
+
+                // Force a layout recalculation
+                void activeScreen.offsetHeight;
+
                 activeScreen.classList.add('active');
 
                 // Initialize Earth if showing start screen
@@ -2429,22 +2438,31 @@
                 // Update active nav button
                 updateActiveNav(screenId);
 
-                // Update URL hash without scrolling
-                history.replaceState(null, null, '#' + screenId);
+                // Update URL hash WITHOUT using replaceState (which can cause issues)
+                // Try using a different approach to update the URL
+                if (window.location.hash !== '#' + screenId) {
+                    window.location.hash = screenId;
+                }
 
-                // Ensure screen is scrollable (add this)
+                // Ensure scrolling is enabled
                 document.body.style.overflow = 'auto';
+                activeScreen.style.overflow = 'auto';
+                activeScreen.style.webkitOverflowScrolling = 'touch';
+
+                // Re-enable interactions after a short delay
+                setTimeout(() => {
+                    document.body.classList.remove('switching-screen');
+                }, 50);
             }
         }
 
-        // Update active nav button
+        // Update active nav button - use data attributes instead of onclick attributes
         function updateActiveNav(screenId) {
             const navButtons = document.querySelectorAll('.nav-button');
 
             navButtons.forEach(button => {
-                // Extract the target screen from the onclick attribute
-                const onclickAttr = button.getAttribute('onclick');
-                const targetScreen = onclickAttr ? onclickAttr.match(/showScreen\('(.+?)'\)/)[1] : null;
+                // Use data-target attribute instead of parsing onclick
+                const targetScreen = button.getAttribute('data-target-screen');
 
                 if (targetScreen === screenId) {
                     button.classList.add('active');
@@ -2454,29 +2472,22 @@
             });
         }
 
-        // Handle initial load and back/forward navigation
-        window.addEventListener('load', function () {
-            const hash = window.location.hash.substring(1) || 'start-screen';
-            showScreen(hash);
-        });
+        // Add this listener for iOS-specific fixes
+        document.addEventListener('touchstart', function () {
+            // This empty handler enables :active CSS states on iOS
+        }, false);
 
-        window.addEventListener('hashchange', function () {
-            const hash = window.location.hash.substring(1) || 'start-screen';
-            showScreen(hash);
-        });
-
-        // REMOVE this event listener that was preventing scroll
-        // document.body.addEventListener('touchmove', function (e) {
-        //     if (!e.target.closest('.screen')) {
-        //         e.preventDefault();
-        //     }
-        // }, { passive: false });
-
-        // Add this instead if you need any touch handling
-        document.body.addEventListener('touchmove', function (e) {
-            // Allow default scrolling in all cases
-            // Only prevent default for specific UI elements if needed
-        }, { passive: true });  // passive: true improves scroll performance
+        // Clean up any potential touch event issues
+        document.addEventListener('touchend', function () {
+            // Ensure body scrolling is enabled after touch ends
+            setTimeout(() => {
+                document.body.style.overflow = 'auto';
+                const activeScreen = document.querySelector('.screen.active');
+                if (activeScreen) {
+                    activeScreen.style.overflow = 'auto';
+                }
+            }, 100);
+        }, false);
     </script>
 
     <!-- Earth.js script -->
