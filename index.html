@@ -1206,6 +1206,65 @@
             font-size: 80px;
             color: var(--color-primary);
         }
+
+        .media-buttons {
+            display: flex;
+            margin: 10px 0;
+        }
+
+        .camera-button {
+            background-color: #2d2d2d;
+            color: #f2fc86;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .camera-button:hover {
+            background-color: #3d3d3d;
+            transform: scale(1.05);
+        }
+
+        .camera-button i {
+            font-size: 18px;
+        }
+
+        .media-preview {
+            max-width: 100%;
+            max-height: 200px;
+            margin-top: 10px;
+            border-radius: 8px;
+            display: block;
+        }
+
+        .media-container {
+            position: relative;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .remove-media {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -2403,9 +2462,392 @@
             const postTextarea = document.querySelector('.post-form textarea');
             const newsFeed = document.querySelector('.news-feed');
 
+            // Add camera button to post form
+            const postForm = document.querySelector('.post-form');
+            const mediaButtonsContainer = document.createElement('div');
+            mediaButtonsContainer.className = 'media-buttons';
+            mediaButtonsContainer.innerHTML = `
+                <button class="camera-button" title="Take photo or video">
+                    <i class="fas fa-camera"></i>
+                </button>
+                <input type="file" id="media-input" accept="image/*,video/*" style="display:none">
+            `;
+
+            // Insert media buttons before the post button
+            const postButtonContainer = postButton.parentElement;
+            postForm.insertBefore(mediaButtonsContainer, postButtonContainer);
+
+            // Add styles for media buttons and camera UI
+            const style = document.createElement('style');
+            style.textContent = `
+                .media-buttons {
+                    display: flex;
+                    margin: 10px 0;
+                }
+                .camera-button {
+                    background-color: #2d2d2d;
+                    color: #f2fc86;
+                    border: none;
+                    border-radius: 50%;
+                    width: 40px;
+                    height: 40px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    margin-right: 10px;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                }
+                .camera-button:hover {
+                    background-color: #3d3d3d;
+                    transform: scale(1.05);
+                }
+                .camera-button i {
+                    font-size: 18px;
+                }
+                .media-preview {
+                    max-width: 100%;
+                    max-height: 200px;
+                    margin-top: 10px;
+                    border-radius: 8px;
+                    display: block;
+                }
+                .media-container {
+                    position: relative;
+                    display: inline-block;
+                    margin-top: 10px;
+                    width: 100%;
+                }
+                .remove-media {
+                    position: absolute;
+                    top: 5px;
+                    right: 5px;
+                    background: rgba(0,0,0,0.7);
+                    color: white;
+                    border: none;
+                    border-radius: 50%;
+                    width: 24px;
+                    height: 24px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    cursor: pointer;
+                }
+                .camera-ui {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background-color: #000;
+                    z-index: 1000;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                }
+                .camera-preview {
+                    width: 100%;
+                    max-height: 80vh;
+                    background-color: #000;
+                }
+                .camera-controls {
+                    display: flex;
+                    justify-content: space-around;
+                    width: 100%;
+                    padding: 20px;
+                }
+                .camera-control-button {
+                    background-color: rgba(45, 45, 45, 0.7);
+                    color: #fff;
+                    border: none;
+                    border-radius: 50%;
+                    width: 60px;
+                    height: 60px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    cursor: pointer;
+                }
+                .capture-button {
+                    background-color: #f2fc86;
+                    color: #000;
+                }
+                .switch-camera {
+                    background-color: rgba(45, 45, 45, 0.7);
+                    color: #fff;
+                    border: none;
+                    border-radius: 50%;
+                    width: 40px;
+                    height: 40px;
+                    position: absolute;
+                    top: 20px;
+                    right: 20px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    cursor: pointer;
+                }
+            `;
+            document.head.appendChild(style);
+
+            // Variables for media handling
+            const cameraButton = document.querySelector('.camera-button');
+            const mediaInput = document.getElementById('media-input');
+            let mediaFile = null;
+            let mediaPreviewContainer = null;
+            let stream = null;
+            let facingMode = "user"; // Start with front camera
+
+            // Handle camera button click - open camera UI
+            cameraButton.addEventListener('click', function () {
+                // Check if browser supports getUserMedia
+                if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                    // Create camera UI
+                    const cameraUI = document.createElement('div');
+                    cameraUI.className = 'camera-ui';
+
+                    cameraUI.innerHTML = `
+                        <video class="camera-preview" autoplay playsinline></video>
+                        <div class="camera-controls">
+                            <button class="camera-control-button cancel-button"><i class="fas fa-times"></i></button>
+                            <button class="camera-control-button capture-button"><i class="fas fa-camera"></i></button>
+                            <button class="camera-control-button switch-mode"><i class="fas fa-video"></i></button>
+                        </div>
+                        <button class="switch-camera"><i class="fas fa-sync-alt"></i></button>
+                    `;
+
+                    document.body.appendChild(cameraUI);
+
+                    const videoElement = document.querySelector('.camera-preview');
+                    const captureButton = document.querySelector('.capture-button');
+                    const cancelButton = document.querySelector('.cancel-button');
+                    const switchModeButton = document.querySelector('.switch-mode');
+                    const switchCameraButton = document.querySelector('.switch-camera');
+
+                    let isVideoMode = false;
+                    let mediaRecorder = null;
+                    let recordedChunks = [];
+
+                    // Start camera
+                    startCamera();
+
+                    function startCamera() {
+                        // Stop any existing stream
+                        if (stream) {
+                            stream.getTracks().forEach(track => track.stop());
+                        }
+
+                        // Get user media with current facing mode
+                        navigator.mediaDevices.getUserMedia({
+                            video: { facingMode: facingMode },
+                            audio: isVideoMode
+                        })
+                            .then(function (mediaStream) {
+                                stream = mediaStream;
+                                videoElement.srcObject = mediaStream;
+
+                                // Setup video recording if in video mode
+                                if (isVideoMode) {
+                                    mediaRecorder = new MediaRecorder(mediaStream);
+
+                                    mediaRecorder.ondataavailable = function (e) {
+                                        if (e.data.size > 0) {
+                                            recordedChunks.push(e.data);
+                                        }
+                                    };
+
+                                    mediaRecorder.onstop = function () {
+                                        const blob = new Blob(recordedChunks, { type: 'video/webm' });
+                                        recordedChunks = [];
+                                        handleCapturedMedia(blob, 'video/webm');
+                                    };
+                                }
+                            })
+                            .catch(function (error) {
+                                console.error("Camera error:", error);
+                                // Fallback to file input
+                                closeCameraUI();
+                                mediaInput.click();
+                            });
+                    }
+
+                    // Switch between front and back camera
+                    switchCameraButton.addEventListener('click', function () {
+                        facingMode = facingMode === "user" ? "environment" : "user";
+                        startCamera();
+                    });
+
+                    // Switch between photo and video mode
+                    switchModeButton.addEventListener('click', function () {
+                        isVideoMode = !isVideoMode;
+
+                        // Update UI
+                        if (isVideoMode) {
+                            switchModeButton.innerHTML = '<i class="fas fa-camera"></i>';
+                            captureButton.innerHTML = '<i class="fas fa-circle"></i>';
+                        } else {
+                            switchModeButton.innerHTML = '<i class="fas fa-video"></i>';
+                            captureButton.innerHTML = '<i class="fas fa-camera"></i>';
+                        }
+
+                        // Restart camera with new settings
+                        startCamera();
+                    });
+
+                    // Handle capture button
+                    let isRecording = false;
+                    captureButton.addEventListener('click', function () {
+                        if (isVideoMode) {
+                            if (!isRecording) {
+                                // Start recording
+                                recordedChunks = [];
+                                mediaRecorder.start();
+                                isRecording = true;
+                                captureButton.style.backgroundColor = "#ff4136"; // Red recording indicator
+                            } else {
+                                // Stop recording
+                                mediaRecorder.stop();
+                                isRecording = false;
+                                captureButton.style.backgroundColor = "#f2fc86";
+                                closeCameraUI();
+                            }
+                        } else {
+                            // Take photo
+                            const canvas = document.createElement('canvas');
+                            canvas.width = videoElement.videoWidth;
+                            canvas.height = videoElement.videoHeight;
+                            const ctx = canvas.getContext('2d');
+                            ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+
+                            // Convert to blob
+                            canvas.toBlob(function (blob) {
+                                handleCapturedMedia(blob, 'image/jpeg');
+                                closeCameraUI();
+                            }, 'image/jpeg', 0.95);
+                        }
+                    });
+
+                    // Handle cancel button
+                    cancelButton.addEventListener('click', closeCameraUI);
+
+                    function closeCameraUI() {
+                        if (stream) {
+                            stream.getTracks().forEach(track => track.stop());
+                        }
+                        if (cameraUI.parentNode) {
+                            cameraUI.parentNode.removeChild(cameraUI);
+                        }
+                    }
+
+                    // Handle captured media (photo or video)
+                    function handleCapturedMedia(blob, type) {
+                        mediaFile = new File([blob], type.includes('image') ? 'photo.jpg' : 'video.webm', { type: type });
+
+                        // Remove existing preview if any
+                        if (mediaPreviewContainer) {
+                            mediaPreviewContainer.remove();
+                        }
+
+                        // Create preview container
+                        mediaPreviewContainer = document.createElement('div');
+                        mediaPreviewContainer.className = 'media-container';
+
+                        // Create remove button
+                        const removeButton = document.createElement('button');
+                        removeButton.className = 'remove-media';
+                        removeButton.innerHTML = '<i class="fas fa-times"></i>';
+                        removeButton.addEventListener('click', function (e) {
+                            e.stopPropagation();
+                            mediaPreviewContainer.remove();
+                            mediaFile = null;
+                            mediaPreviewContainer = null;
+                        });
+
+                        // Create preview element based on file type
+                        if (type.includes('image')) {
+                            const preview = document.createElement('img');
+                            preview.className = 'media-preview';
+                            preview.src = URL.createObjectURL(blob);
+                            mediaPreviewContainer.appendChild(preview);
+                        } else {
+                            const preview = document.createElement('video');
+                            preview.className = 'media-preview';
+                            preview.controls = true;
+                            preview.src = URL.createObjectURL(blob);
+                            mediaPreviewContainer.appendChild(preview);
+                        }
+
+                        mediaPreviewContainer.appendChild(removeButton);
+                        postForm.insertBefore(mediaPreviewContainer, postButtonContainer);
+                    }
+                } else {
+                    // Fallback for browsers that don't support getUserMedia
+                    mediaInput.click();
+                }
+            });
+
+            // Handle file selection (fallback method)
+            mediaInput.addEventListener('change', function (e) {
+                if (e.target.files && e.target.files[0]) {
+                    mediaFile = e.target.files[0];
+
+                    // Remove existing preview if any
+                    if (mediaPreviewContainer) {
+                        mediaPreviewContainer.remove();
+                    }
+
+                    // Create preview container
+                    mediaPreviewContainer = document.createElement('div');
+                    mediaPreviewContainer.className = 'media-container';
+
+                    // Create remove button
+                    const removeButton = document.createElement('button');
+                    removeButton.className = 'remove-media';
+                    removeButton.innerHTML = '<i class="fas fa-times"></i>';
+                    removeButton.addEventListener('click', function (e) {
+                        e.stopPropagation();
+                        mediaPreviewContainer.remove();
+                        mediaFile = null;
+                        mediaPreviewContainer = null;
+                        mediaInput.value = '';
+                    });
+
+                    // Create preview element based on file type
+                    if (mediaFile.type.startsWith('image/')) {
+                        const preview = document.createElement('img');
+                        preview.className = 'media-preview';
+                        preview.file = mediaFile;
+
+                        const reader = new FileReader();
+                        reader.onload = function (e) {
+                            preview.src = e.target.result;
+                        };
+                        reader.readAsDataURL(mediaFile);
+
+                        mediaPreviewContainer.appendChild(preview);
+                    } else if (mediaFile.type.startsWith('video/')) {
+                        const preview = document.createElement('video');
+                        preview.className = 'media-preview';
+                        preview.controls = true;
+
+                        const reader = new FileReader();
+                        reader.onload = function (e) {
+                            preview.src = e.target.result;
+                        };
+                        reader.readAsDataURL(mediaFile);
+
+                        mediaPreviewContainer.appendChild(preview);
+                    }
+
+                    mediaPreviewContainer.appendChild(removeButton);
+                    postForm.insertBefore(mediaPreviewContainer, postButtonContainer);
+                }
+            });
+
+            // Rest of the code remains the same...
             // Improve textarea experience on mobile
             postTextarea.addEventListener('focus', function () {
-                // Scroll to make sure the textarea is visible when keyboard opens
                 setTimeout(function () {
                     postTextarea.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }, 300);
@@ -2414,7 +2856,7 @@
             // Handle post creation
             postButton.addEventListener('click', function () {
                 const postContent = postTextarea.value.trim();
-                if (postContent) {
+                if (postContent || mediaFile) {
                     // Create new post element
                     const newPost = document.createElement('div');
                     newPost.className = 'post';
@@ -2424,7 +2866,7 @@
                     const timeString = 'Just now';
 
                     // Create post HTML
-                    newPost.innerHTML = `
+                    let postHTML = `
                         <div class="post-header">
                             <div class="post-avatar">
                                 <i class="fas fa-user"></i>
@@ -2435,7 +2877,14 @@
                             </div>
                         </div>
                         <div class="post-content">
-                            <p>${postContent}</p>
+                    `;
+
+                    // Add text content if any
+                    if (postContent) {
+                        postHTML += `<p>${postContent}</p>`;
+                    }
+
+                    postHTML += `
                         </div>
                         <div class="post-actions">
                             <div class="post-action"><i class="fas fa-heart"></i> 0</div>
@@ -2444,11 +2893,51 @@
                         </div>
                     `;
 
+                    newPost.innerHTML = postHTML;
+
+                    // Add media content if any
+                    if (mediaFile) {
+                        if (mediaFile.type.startsWith('image/')) {
+                            const reader = new FileReader();
+                            reader.onload = function (e) {
+                                const mediaElement = document.createElement('img');
+                                mediaElement.src = e.target.result;
+                                mediaElement.className = 'post-media';
+                                mediaElement.style.maxWidth = '100%';
+                                mediaElement.style.borderRadius = '8px';
+                                mediaElement.style.marginTop = '10px';
+
+                                newPost.querySelector('.post-content').appendChild(mediaElement);
+                            };
+                            reader.readAsDataURL(mediaFile);
+                        } else if (mediaFile.type.startsWith('video/')) {
+                            const reader = new FileReader();
+                            reader.onload = function (e) {
+                                const mediaElement = document.createElement('video');
+                                mediaElement.src = e.target.result;
+                                mediaElement.className = 'post-media';
+                                mediaElement.controls = true;
+                                mediaElement.style.maxWidth = '100%';
+                                mediaElement.style.borderRadius = '8px';
+                                mediaElement.style.marginTop = '10px';
+
+                                newPost.querySelector('.post-content').appendChild(mediaElement);
+                            };
+                            reader.readAsDataURL(mediaFile);
+                        }
+                    }
+
                     // Add new post at the top of the feed
                     newsFeed.insertBefore(newPost, newsFeed.firstChild);
 
-                    // Clear the textarea
+                    // Clear the textarea and media
                     postTextarea.value = '';
+                    if (mediaPreviewContainer) {
+                        mediaPreviewContainer.remove();
+                        mediaFile = null;
+                        mediaPreviewContainer = null;
+                        mediaInput.value = '';
+                    }
 
                     // Hide mobile keyboard
                     postTextarea.blur();
