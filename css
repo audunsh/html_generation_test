@@ -1,8 +1,253 @@
+/* Design System */
+:root {
+    /* Color Palette */
+    --color-primary: #03dac6;
+    --color-secondary: #bb86fc;
+    --color-accent: #f2fc86;
+
+    /* Background Colors */
+    --color-background-primary: #121212;
+    --color-background-secondary: #1e1e1e;
+    --color-background-tertiary: #2d2d2d;
+    --color-background-elevated: #3d3d3d;
+
+    /* Text Colors */
+    --color-text-primary: #e0e0e0;
+    --color-text-secondary: #bbbbbb;
+    --color-text-muted: #888888;
+
+    /* Status Colors */
+    --color-success: #4caf50;
+    --color-warning: #ff9800;
+    --color-error: #f44336;
+    --color-info: #2196f3;
+
+    /* Typography */
+    --font-family-base: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    --font-size-xs: 0.75rem;
+    /* 12px */
+    --font-size-sm: 0.875rem;
+    /* 14px */
+    --font-size-base: 1rem;
+    /* 16px */
+    --font-size-lg: 1.125rem;
+    /* 18px */
+    --font-size-xl: 1.25rem;
+    /* 20px */
+    --font-size-2xl: 1.5rem;
+    /* 24px */
+
+    /* Font Weights */
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-bold: 700;
+
+    /* Spacing */
+    --spacing-xs: 0.25rem;
+    /* 4px */
+    --spacing-sm: 0.5rem;
+    /* 8px */
+    --spacing-md: 1rem;
+    /* 16px */
+    --spacing-lg: 1.5rem;
+    /* 24px */
+    --spacing-xl: 2rem;
+    /* 32px */
+
+    /* Border Radius */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-full: 9999px;
+
+    /* Shadows */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 2px 5px rgba(0, 0, 0, 0.2);
+    --shadow-lg: 0 4px 10px rgba(0, 0, 0, 0.3);
+
+    /* Transitions */
+    --transition-fast: 0.2s ease;
+    --transition-base: 0.3s ease;
+    --transition-slow: 0.5s ease;
+
+    /* Z-index */
+    --z-index-base: 1;
+    --z-index-above: 2;
+    --z-index-nav: 100;
+    --z-index-modal: 1000;
+
+    /* Layout */
+    --content-width-sm: 600px;
+    --content-width-md: 768px;
+    --content-width-lg: 1024px;
+    --header-height: 60px;
+    --footer-height: 80px;
+
+    /* Component-specific */
+    --card-padding: var(--spacing-md);
+    --button-height: 44px;
+    --input-height: 44px;
+    --nav-button-size: 44px;
+}
+
+/* Base Styles */
 body {
-    font-family: sans-serif;
+    font-family: var(--font-family-base);
+    background-color: var(--color-background-primary);
+    color: var(--color-text-primary);
     margin: 0;
     padding: 0;
-    background-color: #f0f0f0; /* Light gray background */
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Typography */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: var(--color-accent);
+    font-weight: var(--font-weight-bold);
+    margin: 0 0 var(--spacing-md);
+}
+
+h1 {
+    font-size: var(--font-size-2xl);
+}
+
+h2 {
+    font-size: var(--font-size-xl);
+}
+
+h3 {
+    font-size: var(--font-size-lg);
+}
+
+h4 {
+    font-size: var(--font-size-base);
+}
+
+p {
+    margin: 0 0 var(--spacing-md);
+    font-size: var(--font-size-base);
+}
+
+/* Links */
+a {
+    color: var(--color-secondary);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+a:hover {
+    color: var(--color-primary);
+}
+
+/* Buttons */
+.button {
+    height: var(--button-height);
+    padding: 0 var(--spacing-lg);
+    border-radius: var(--radius-full);
+    border: none;
+    font-weight: var(--font-weight-medium);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+}
+
+.button-primary {
+    background-color: var(--color-primary);
+    color: var(--color-background-primary);
+}
+
+.button-secondary {
+    background-color: var(--color-secondary);
+    color: var(--color-background-primary);
+}
+
+/* Cards */
+.card {
+    background-color: var(--color-background-secondary);
+    border-radius: var(--radius-md);
+    padding: var(--card-padding);
+    box-shadow: var(--shadow-md);
+}
+
+/* Form Elements */
+.input {
+    height: var(--input-height);
+    background-color: var(--color-background-tertiary);
+    border: 1px solid var(--color-background-elevated);
+    border-radius: var(--radius-md);
+    padding: 0 var(--spacing-md);
+    color: var(--color-text-primary);
+    font-size: var(--font-size-base);
+}
+
+/* Utility Classes */
+.text-primary {
+    color: var(--color-text-primary);
+}
+
+.text-secondary {
+    color: var(--color-text-secondary);
+}
+
+.text-muted {
+    color: var(--color-text-muted);
+}
+
+.text-accent {
+    color: var(--color-accent);
+}
+
+.bg-primary {
+    background-color: var(--color-background-primary);
+}
+
+.bg-secondary {
+    background-color: var(--color-background-secondary);
+}
+
+.bg-tertiary {
+    background-color: var(--color-background-tertiary);
+}
+
+.margin-bottom-sm {
+    margin-bottom: var(--spacing-sm);
+}
+
+.margin-bottom-md {
+    margin-bottom: var(--spacing-md);
+}
+
+.margin-bottom-lg {
+    margin-bottom: var(--spacing-lg);
+}
+
+.padding-sm {
+    padding: var(--spacing-sm);
+}
+
+.padding-md {
+    padding: var(--spacing-md);
+}
+
+.padding-lg {
+    padding: var(--spacing-lg);
+}
+
+/* Media Queries */
+@media (min-width: 768px) {
+    :root {
+        --card-padding: var(--spacing-lg);
+    }
 }
 
 .container {
@@ -16,7 +261,8 @@ body {
 .start-circle {
     width: 80px;
     height: 80px;
-    background-color: #ffcccc; /* Light red for start circle */
+    background-color: #ffcccc;
+    /* Light red for start circle */
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -26,13 +272,15 @@ body {
 
 .start-circle a {
     text-decoration: none;
-    color: #333; /* Dark gray text */
+    color: #333;
+    /* Dark gray text */
     font-weight: bold;
     font-size: 1.2em;
 }
 
 .screen {
-    display: none; /* Initially hide all screens */
+    display: none;
+    /* Initially hide all screens */
     width: 90%;
     max-width: 600px;
     background-color: white;
@@ -42,7 +290,8 @@ body {
 }
 
 .screen:target {
-    display: block; /* Show the targeted screen */
+    display: block;
+    /* Show the targeted screen */
 }
 
 header {
@@ -61,7 +310,8 @@ nav ul {
 
 nav a {
     text-decoration: none;
-    color: #007bff; /* Blue for links */
+    color: #007bff;
+    /* Blue for links */
 }
 
 .features {
@@ -77,14 +327,16 @@ nav a {
 .feature img {
     width: 80px;
     height: 80px;
-    background-color: #eee; /* Light gray for image placeholders */
+    background-color: #eee;
+    /* Light gray for image placeholders */
     margin-bottom: 10px;
 }
 
 .back-button {
     display: inline-block;
     padding: 10px 20px;
-    background-color: #007bff; /* Blue button */
+    background-color: #007bff;
+    /* Blue button */
     color: white;
     text-decoration: none;
     border-radius: 5px;

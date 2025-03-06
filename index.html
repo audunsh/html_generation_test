@@ -89,7 +89,7 @@
 
         /* Dark theme for links */
         a {
-            color: #bb86fc;
+            color: #f2fc86;
             text-decoration: none;
             transition: color 0.3s ease;
         }
@@ -159,8 +159,8 @@
 
         h1,
         h2 {
-            color: #bb86fc;
-            text-shadow: 0 0 10px rgba(187, 134, 252, 0.3);
+            color: #f2fc86;
+            text-shadow: 0 0 10px rgba(252, 248, 134, 0.3);
         }
 
         /* Bottom navigation bar */
@@ -182,7 +182,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            color: #bb86fc;
+            color: #f2fc86;
             text-decoration: none;
             padding: 12px 16px;
             /* Larger touch target */
@@ -193,7 +193,7 @@
         .nav-button:hover,
         .nav-button.active {
             background-color: #3d3d3d;
-            color: #03dac6;
+            color: #f7f7f7;
         }
 
         .nav-button i {
@@ -235,7 +235,7 @@
             justify-content: center;
             align-items: center;
             font-size: 20px;
-            color: #bb86fc;
+            color: #f2fc86;
         }
 
         .post-info {
@@ -244,7 +244,7 @@
 
         .post-author {
             font-weight: bold;
-            color: #bb86fc;
+            color: #f2fc86;
             margin: 0;
         }
 
@@ -367,7 +367,7 @@
         }
 
         .attachment-button {
-            color: #bb86fc;
+            color: #f2fc86;
             background: none;
             border: none;
             cursor: pointer;
@@ -384,7 +384,7 @@
         }
 
         .post-button {
-            background-color: #bb86fc;
+            background-color: #f2fc86;
             color: #121212;
             border: none;
             border-radius: 20px;
@@ -478,7 +478,7 @@
 
         .company-info h3 {
             margin: 0 0 5px 0;
-            color: #bb86fc;
+            color: #f2fc86;
             display: flex;
             align-items: center;
             gap: 5px;
@@ -625,7 +625,7 @@
         }
 
         .category-button.active {
-            background-color: #bb86fc;
+            background-color: #f2fc86;
             color: #121212;
         }
 
@@ -721,7 +721,7 @@
         .content-creator {
             margin: 0 0 3px 0;
             font-size: 12px;
-            color: #bb86fc;
+            color: #f2fc86;
         }
 
         .content-views {
@@ -808,7 +808,7 @@
         }
 
         .connection-tab.active {
-            color: #bb86fc;
+            color: #f2fc86;
         }
 
         .connection-tab.active::after {
@@ -818,7 +818,7 @@
             left: 15%;
             width: 70%;
             height: 3px;
-            background-color: #bb86fc;
+            background-color: #f2fc86;
             border-radius: 3px;
         }
 
@@ -886,7 +886,7 @@
         .connection-detail {
             margin: 0 0 5px 0;
             font-size: 14px;
-            color: #bb86fc;
+            color: #f2fc86;
         }
 
         .connection-mutual {
@@ -911,7 +911,7 @@
 
         .connect-button {
             background-color: #2d2d2d;
-            color: #bb86fc;
+            color: #f2fc86;
             border: none;
             border-radius: 20px;
             padding: 8px 12px;
@@ -941,7 +941,7 @@
         .event-date {
             width: 50px;
             height: 60px;
-            background-color: #bb86fc;
+            background-color: #f2fc86;
             color: #121212;
             border-radius: 8px;
             display: flex;
@@ -1033,7 +1033,7 @@
         .initiative-org {
             margin: 0 0 8px 0;
             font-size: 14px;
-            color: #bb86fc;
+            color: #f2fc86;
         }
 
         .initiative-progress {
@@ -1119,7 +1119,7 @@
         .company-type {
             margin: 0 0 5px 0;
             font-size: 14px;
-            color: #bb86fc;
+            color: #f2fc86;
         }
 
         .company-followers {
@@ -1143,7 +1143,7 @@
         }
 
         .follow-button {
-            background-color: #bb86fc;
+            background-color: #f2fc86;
             color: #121212;
             border: none;
             border-radius: 20px;
@@ -1153,10 +1153,58 @@
             margin-left: 10px;
             flex-shrink: 0;
         }
+
+        /* Splash screen styles */
+        #splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--color-background-primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: var(--z-index-modal);
+            opacity: 0;
+            transition: opacity 20ms ease-in-out;
+        }
+
+        #splash-screen.visible {
+            opacity: 1;
+        }
+
+        #splash-logo {
+            width: 150px;
+            height: 150px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--color-background-secondary);
+            border-radius: 50%;
+        }
+
+        #splash-logo i {
+            font-size: 80px;
+            color: var(--color-primary);
+        }
     </style>
 </head>
 
 <body>
+    <!-- Splash Screen -->
+    <div id="splash-screen">
+        <div id="splash-logo">
+            <i class="fas fa-leaf"></i>
+        </div>
+    </div>
+
+    <!-- Audio element for splash sound -->
+    <audio id="splash-sound" preload="auto">
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-modern-technology-select-3124.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Rest of your content -->
     <div class="container">
         <div class="start-circle">
             <a href="#start-screen">Start</a>
@@ -2272,6 +2320,39 @@
                     this.disabled = true;
                 });
             });
+        });
+    </script>
+
+    <script>
+        // Splash screen logic
+        document.addEventListener('DOMContentLoaded', function () {
+            const splashScreen = document.getElementById('splash-screen');
+            const splashSound = document.getElementById('splash-sound');
+
+            // Show splash screen with fade in
+            splashScreen.classList.add('visible');
+
+            // Play sound
+            splashSound.play().catch(e => {
+                // Handle autoplay restrictions
+                console.log('Sound autoplay prevented:', e);
+            });
+
+            // Hide splash screen after 1 second and show start screen
+            setTimeout(function () {
+                splashScreen.classList.remove('visible');
+
+                // Remove splash screen from DOM after transition
+                setTimeout(function () {
+                    splashScreen.style.display = 'none';
+
+                    // Show start screen
+                    const startScreen = document.getElementById('start-screen');
+                    if (startScreen) {
+                        startScreen.classList.add('active');
+                    }
+                }, 20); // Match the transition duration
+            }, 1000);
         });
     </script>
 </body>
