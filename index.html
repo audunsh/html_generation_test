@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Start Screen</title>
+    <title>Atlas</title>
     <link rel="stylesheet" href="style.css">
     <!-- Add Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -169,11 +169,13 @@
             bottom: 0;
             left: 0;
             width: 100%;
-            background-color: #1e1e1e;
+            background-color: transparent;
+            /* Changed from #1e1e1e to transparent */
             display: flex;
             justify-content: space-around;
             padding: 12px 0;
-            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
+            box-shadow: none;
+            /* Removed the shadow */
             z-index: 100;
             /* Ensure nav is above all screens */
         }
@@ -188,11 +190,14 @@
             /* Larger touch target */
             border-radius: 8px;
             transition: all 0.3s ease;
+            background-color: rgba(30, 30, 30, 0.0);
+            /* Semi-transparent background for buttons */
         }
 
         .nav-button:hover,
         .nav-button.active {
-            background-color: #3d3d3d;
+            background-color: rgba(61, 61, 61, 0.0);
+            /* Semi-transparent hover state */
             color: #f7f7f7;
         }
 
@@ -302,32 +307,45 @@
             font-size: 14px;
         }
 
-        /* Earth container styling */
+        /* Full-screen Earth container styling */
         #earth-container {
-            width: 90vw;
-            /* Use viewport width */
-            height: 90vw;
-            /* Keep it square */
-            max-width: 400px;
-            /* Cap the maximum size */
-            max-height: 400px;
-            position: relative;
-            margin: 20px auto;
-            border-radius: 50%;
-            overflow: hidden;
-            box-shadow: 0 0 30px rgba(3, 218, 198, 0.3);
-        }
-
-        /* Make sure canvas fills the container */
-        #earth-container canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            display: block;
+            z-index: 1;
+            /* Above background, below content */
+            pointer-events: auto;
+            /* Enable interaction */
         }
 
-        /* Add some space between earth and features */
-        #start-screen .features {
-            margin-top: 20px;
+        /* Ensure start screen content appears above Earth */
+        #start-screen .content-wrapper {
+            position: relative;
+            z-index: 2;
+            /* Above Earth */
+            pointer-events: auto;
+            padding: 20px;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Add semi-transparent background to text elements for readability */
+        #start-screen .title-container,
+        #start-screen .subtitle-container,
+        #start-screen .start-buttons {
+            background-color: rgba(18, 18, 18, 0.6);
+            padding: 15px 25px;
+            border-radius: var(--radius-lg);
+            margin-bottom: 20px;
+            backdrop-filter: blur(3px);
+            max-width: 80%;
+            text-align: center;
         }
 
         /* Post creation form styling */
@@ -1206,39 +1224,17 @@
 
     <!-- Rest of your content -->
     <div class="container">
-        <div class="start-circle">
-            <a href="#start-screen">Start</a>
-        </div>
+
 
         <div id="start-screen" class="screen active">
             <div class="nav-arrow" onclick="showScreen('hub')">←</div>
-            <header>
-                <h1>Start Screen</h1>
-            </header>
-            <nav>
-                <ul>
-                    <li><a href="#hub">Hub</a></li>
-                    <li><a href="#certified">Certified Companies</a></li>
-                </ul>
-            </nav>
+
+
+
 
             <!-- Earth container with increased size -->
             <div id="earth-container"></div>
 
-            <section class="features">
-                <div class="feature">
-                    <img src="placeholder.png" alt="Original Content">
-                    <a href="#original">Original Content</a>
-                </div>
-                <div class="feature">
-                    <img src="placeholder.png" alt="Community">
-                    <a href="#community">Community</a>
-                </div>
-                <div class="feature">
-                    <img src="placeholder.png" alt="Connections">
-                    <a href="#connections">Connections</a>
-                </div>
-            </section>
         </div>
 
         <div id="hub" class="screen">
@@ -1535,13 +1531,11 @@
         </div>
 
         <div id="original" class="screen">
-            <div class="nav-arrow" onclick="showScreen('start-screen')">←</div>
             <h2>Original Content</h2>
             <p>Content for Original Content section.</p>
         </div>
 
         <div id="community" class="screen">
-            <div class="nav-arrow" onclick="showScreen('start-screen')">←</div>
             <h2>Community</h2>
 
             <!-- Add post creation form -->
@@ -1941,11 +1935,11 @@
         <!-- Bottom Navigation Bar -->
         <nav class="bottom-nav">
             <a href="javascript:void(0)" class="nav-button" onclick="showScreen('hub')">
-                <i class="fas fa-home"></i>
-                <span>Hub</span>
+                <i class="fas fa-photo-video"></i>
+                <span>Original Content</span>
             </a>
             <a href="javascript:void(0)" class="nav-button" onclick="showScreen('certified')">
-                <i class="fas fa-building"></i>
+                <i class="fas fa-certificate"></i>
                 <span>Certified</span>
             </a>
             <a href="javascript:void(0)" class="nav-button" onclick="showScreen('community')">
@@ -1974,16 +1968,13 @@
             if (activeScreen) {
                 activeScreen.classList.add('active');
 
-                // Update active nav button
-                updateActiveNav(screenId);
-
                 // Initialize Earth if showing start screen
                 if (screenId === 'start-screen') {
-                    const container = document.getElementById('earth-container');
-                    if (container && !container.querySelector('canvas')) {
-                        setTimeout(initEarth, 100);
-                    }
+                    setTimeout(initEarth, 100);
                 }
+
+                // Update active nav button
+                updateActiveNav(screenId);
 
                 // Update URL hash without scrolling
                 history.replaceState(null, null, '#' + screenId);
@@ -2040,19 +2031,25 @@
             const scene = new THREE.Scene();
 
             // Create camera
-            const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
             camera.position.z = 2.2;
 
             // Create renderer with mobile optimizations
             const container = document.getElementById('earth-container');
+
+            // Clear any existing content
+            while (container.firstChild) {
+                container.removeChild(container.firstChild);
+            }
+
             const renderer = new THREE.WebGLRenderer({
                 antialias: false, // Disable antialiasing on mobile for performance
                 alpha: true,
                 powerPreference: 'high-performance'
             });
 
-            // Set size and pixel ratio based on device
-            renderer.setSize(container.clientWidth, container.clientHeight);
+            // Set size to full window
+            renderer.setSize(window.innerWidth, window.innerHeight);
 
             // Limit pixel ratio for performance on mobile
             const pixelRatio = Math.min(window.devicePixelRatio, 2);
@@ -2089,7 +2086,6 @@
             // Create material with textures
             const earthMaterial = new THREE.MeshPhongMaterial({
                 map: earthTexture,
-                bumpMap: bumpMap,
                 bumpScale: 0.05,
                 specularMap: specularMap,
                 specular: new THREE.Color('grey'),
@@ -2112,6 +2108,207 @@
             const clouds = new THREE.Mesh(cloudGeometry, cloudMaterial);
             scene.add(clouds);
 
+            // Add city markers for American cities
+            const cities = [
+                { name: "New York", lat: 40.7128, lng: -74.0060 },
+                { name: "Los Angeles", lat: 34.0522, lng: -118.2437 },
+                { name: "Chicago", lat: 41.8781, lng: -87.6298 },
+                { name: "Houston", lat: 29.7604, lng: -95.3698 },
+                { name: "San Francisco", lat: 37.7749, lng: -122.4194 },
+                { name: "Miami", lat: 25.7617, lng: -80.1918 },
+                { name: "Seattle", lat: 47.6062, lng: -122.3321 },
+                { name: "Denver", lat: 39.7392, lng: -104.9903 },
+                { name: "Mexico City", lat: 19.4326, lng: -99.1332 },
+                { name: "Toronto", lat: 43.6532, lng: -79.3832 },
+                { name: "São Paulo", lat: -23.5505, lng: -46.6333 },
+                { name: "Buenos Aires", lat: -34.6037, lng: -58.3816 }
+            ];
+
+            // Function to convert lat/lng to 3D position
+            function latLngToVector3(lat, lng, radius) {
+                const phi = (90 - lat) * (Math.PI / 180);
+                const theta = (lng + 180) * (Math.PI / 180);
+
+                const x = -radius * Math.sin(phi) * Math.cos(theta);
+                const y = radius * Math.cos(phi);
+                const z = radius * Math.sin(phi) * Math.sin(theta);
+
+                return new THREE.Vector3(x, y, z);
+            }
+
+            // Store all city objects for raycasting
+            const cityObjects = [];
+            const cityMarkers = [];
+
+            // Create city markers
+            cities.forEach(city => {
+                // Position marker
+                const position = latLngToVector3(city.lat, city.lng, 1.02);
+
+                // Store local position for intersection calculations
+                const localPosition = position.clone();
+
+                // Create marker
+                const markerGeometry = new THREE.SphereGeometry(0.01, 16, 16);
+                const markerMaterial = new THREE.MeshBasicMaterial({
+                    color: 0xf2fc86,
+                    transparent: true,
+                    opacity: 0.7
+                });
+                const marker = new THREE.Mesh(markerGeometry, markerMaterial);
+
+                // Add glow effect
+                const glowGeometry = new THREE.SphereGeometry(0.015, 16, 16);
+                const glowMaterial = new THREE.MeshBasicMaterial({
+                    color: 0xf2fc86,
+                    transparent: true,
+                    opacity: 0.0
+                });
+                const glow = new THREE.Mesh(glowGeometry, glowMaterial);
+                glow.position.copy(position);
+
+                // Create text label
+                const canvas = document.createElement('canvas');
+                const context = canvas.getContext('2d');
+                canvas.width = 128;
+                canvas.height = 64;
+
+                context.fillStyle = 'rgba(0, 0, 0, 0.0)';
+                context.fillRect(0, 0, canvas.width, canvas.height);
+
+                context.font = '24px Arial';
+                context.fillStyle = '#ffffff';
+                context.textAlign = 'center';
+                context.textBaseline = 'middle';
+                context.fillText(city.name, canvas.width / 2, canvas.height / 2);
+
+                const texture = new THREE.CanvasTexture(canvas);
+                const labelMaterial = new THREE.SpriteMaterial({
+                    map: texture,
+                    transparent: true,
+                    opacity: 0 // Start with invisible labels
+                });
+
+                const label = new THREE.Sprite(labelMaterial);
+                label.position.copy(position.clone().multiplyScalar(1.1));
+                label.scale.set(0.2, 0.1, 1);
+
+                // Add to earth instead of scene
+                earth.add(marker);
+                earth.add(glow);
+                earth.add(label);
+
+                // Store city data for interaction
+                marker.userData = {
+                    cityName: city.name,
+                    position: position,
+                    glow: glow,
+                    label: label,
+                    defaultScale: marker.scale.clone(),
+                    highlighted: false,
+                    pulseAnimation: {
+                        offset: Math.random() * Math.PI * 2, // Random starting phase
+                        update: function (time) {
+                            const scale = 1 + 0.2 * Math.sin(time * 0.002 + this.offset);
+                            glow.scale.set(scale, scale, scale);
+                        }
+                    }
+                };
+
+                // Add to arrays for raycasting
+                cityObjects.push(marker);
+                cityMarkers.push({
+                    marker: marker,
+                    glow: glow,
+                    label: label,
+                    position: position,
+                    localPosition: localPosition // Store the local position
+                });
+            });
+
+            // Setup raycaster for mouse interaction
+            const raycaster = new THREE.Raycaster();
+            const mouse = new THREE.Vector2();
+
+            // Track mouse position
+            function onMouseMove(event) {
+                // Calculate mouse position in normalized device coordinates
+                // (-1 to +1) for both components
+                mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+                mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
+            }
+
+            // Add mouse move listener
+            window.addEventListener('mousemove', onMouseMove, false);
+
+            // Handle touch events for mobile
+            function onTouchMove(event) {
+                if (event.touches.length > 0) {
+                    // Prevent default behavior to avoid scrolling
+                    event.preventDefault();
+
+                    // Use the first touch point
+                    const touch = event.touches[0];
+                    mouse.x = (touch.clientX / window.innerWidth) * 2 - 1;
+                    mouse.y = - (touch.clientY / window.innerHeight) * 2 + 1;
+                }
+            }
+
+            // Add touch listeners
+            window.addEventListener('touchmove', onTouchMove, { passive: false });
+
+            // Function to handle mouse/touch interaction with the globe
+            function handleInteraction() {
+                // Update the picking ray with the camera and mouse position
+                raycaster.setFromCamera(mouse, camera);
+
+                // Calculate objects intersecting the picking ray
+                const intersects = raycaster.intersectObject(earth, true);
+
+                // Reset all markers to default state
+                cityMarkers.forEach(city => {
+                    // Gradually reduce opacity if not highlighted
+                    if (!city.marker.userData.highlighted) {
+                        city.label.material.opacity *= 0.95;
+                        if (city.label.material.opacity < 0.01) city.label.material.opacity = 0;
+                    }
+
+                    city.marker.userData.highlighted = false;
+                    city.marker.scale.copy(city.marker.userData.defaultScale);
+                });
+
+                // If we intersect with the earth
+                if (intersects.length > 0) {
+                    // Get the intersection point in world space
+                    const worldIntersectionPoint = intersects[0].point.clone();
+
+                    // Convert to local space of the earth to account for rotation
+                    const localIntersectionPoint = earth.worldToLocal(worldIntersectionPoint);
+
+                    // Find cities near the intersection point
+                    cityMarkers.forEach(city => {
+                        // Calculate distance using the local coordinates
+                        const distance = localIntersectionPoint.distanceTo(city.localPosition);
+
+                        // If close enough, highlight the city
+                        if (distance < 0.3) { // Adjust this threshold as needed
+                            // Calculate opacity based on distance (closer = more visible)
+                            const opacity = Math.max(0, 1 - (distance * 3));
+
+                            // Update label opacity
+                            city.label.material.opacity = opacity;
+
+                            // Scale marker based on proximity
+                            const scale = 1 + (0.5 * (1 - distance * 3));
+                            city.marker.scale.set(scale, scale, scale);
+
+                            // Mark as highlighted
+                            city.marker.userData.highlighted = true;
+                        }
+                    });
+                }
+            }
+
             // Add orbit controls with mobile-friendly settings
             const controls = new THREE.OrbitControls(camera, renderer.domElement);
             controls.enableDamping = true;
@@ -2129,7 +2326,7 @@
 
             // Animation loop with performance considerations
             let lastTime = 0;
-            const rotationSpeed = isMobile ? 0.0003 : 0.0005; // Slower rotation on mobile
+            const rotationSpeed = isMobile ? 0.0001 : 0.00005; // Slower rotation on mobile
 
             function animate(time) {
                 requestAnimationFrame(animate);
@@ -2138,15 +2335,21 @@
                 const delta = time - lastTime;
                 lastTime = time;
 
-                // Only update rotation and render if visible in viewport
-                const rect = container.getBoundingClientRect();
-                if (
-                    rect.bottom >= 0 &&
-                    rect.top <= window.innerHeight
-                ) {
+                // Only update rotation and render if start screen is active
+                if (document.getElementById('start-screen').classList.contains('active')) {
                     // Slowly rotate earth and clouds
                     earth.rotation.y += rotationSpeed * delta;
                     clouds.rotation.y += rotationSpeed * 1.4 * delta;
+
+                    // Update marker animations
+                    cityObjects.forEach(object => {
+                        if (object.userData && object.userData.pulseAnimation) {
+                            object.userData.pulseAnimation.update(time);
+                        }
+                    });
+
+                    // Handle mouse/touch interaction
+                    handleInteraction();
 
                     // Update controls
                     controls.update();
@@ -2158,12 +2361,10 @@
 
             // Handle window resize
             window.addEventListener('resize', function () {
-                if (container.clientWidth) {
-                    camera.aspect = 1; // Keep aspect ratio 1:1
-                    camera.updateProjectionMatrix();
-                    renderer.setSize(container.clientWidth, container.clientHeight);
-                    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-                }
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
             });
 
             // Handle device orientation for mobile
