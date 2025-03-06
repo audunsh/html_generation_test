@@ -1265,6 +1265,296 @@
             align-items: center;
             cursor: pointer;
         }
+
+        /* Enhanced highlighted connections section */
+        .highlighted-connections {
+            margin-bottom: 25px;
+        }
+
+        .highlighted-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .connection-card.highlighted {
+            border-left: 3px solid #f2fc86;
+            background-color: rgba(45, 45, 45, 0.8);
+            padding: 15px;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 15px;
+            align-items: start;
+        }
+
+        .connection-profile {
+            position: relative;
+        }
+
+        .connection-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            overflow: hidden;
+            position: relative;
+            border: 2px solid #3d3d3d;
+        }
+
+        .connection-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .connection-avatar.premium {
+            border-color: #f2fc86;
+        }
+
+        .connection-avatar.company {
+            border-color: #03dac6;
+        }
+
+        .connection-status {
+            position: absolute;
+            bottom: 3px;
+            right: 3px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #4CAF50;
+            border: 2px solid #2d2d2d;
+        }
+
+        .connection-badge {
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            background-color: #f2fc86;
+            color: #121212;
+            font-size: 0.7em;
+            font-weight: bold;
+            padding: 3px 8px;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            white-space: nowrap;
+        }
+
+        .connection-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .connection-location {
+            font-size: 0.8em;
+            color: #bbbbbb;
+        }
+
+        .connection-bio {
+            margin: 8px 0;
+            font-size: 0.9em;
+            color: #e0e0e0;
+            line-height: 1.4;
+        }
+
+        .mutual-highlight {
+            color: #03dac6;
+            font-weight: 500;
+        }
+
+        .connection-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .view-profile-button {
+            background-color: transparent;
+            border: 1px solid #bbbbbb;
+            color: #bbbbbb;
+            padding: 8px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .view-profile-button:hover {
+            background-color: rgba(187, 187, 187, 0.1);
+            color: #ffffff;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            .connection-card.highlighted {
+                grid-template-columns: 1fr;
+            }
+
+            .connection-profile {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .connection-actions {
+                flex-direction: row;
+                justify-content: space-between;
+                width: 100%;
+            }
+
+            .connection-actions button {
+                flex: 1;
+            }
+        }
+
+        /* Swipeable highlighted connections styling */
+        .highlighted-connections {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .swipe-indicator {
+            display: inline-block;
+            margin-left: 10px;
+            color: #f2fc86;
+            animation: bounce 1.5s infinite;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            50% {
+                transform: translateX(5px);
+            }
+        }
+
+        .highlighted-cards-container {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .highlighted-cards {
+            display: flex;
+            width: 300%;
+            /* For 3 cards */
+            transition: transform 0.3s ease;
+        }
+
+        .connection-card.highlighted {
+            flex: 0 0 33.333%;
+            /* For 3 cards */
+            border-left: 3px solid #f2fc86;
+            background-color: rgba(45, 45, 45, 0.8);
+            padding: 15px;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 15px;
+            align-items: start;
+        }
+
+        /* Pagination dots */
+        .pagination-dots {
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+            gap: 8px;
+        }
+
+        .pagination-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: rgba(242, 252, 134, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .pagination-dot.active {
+            background-color: #f2fc86;
+            transform: scale(1.2);
+        }
+
+        /* Rest of the styling remains the same */
+        .connection-profile {
+            position: relative;
+        }
+
+        .connection-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            overflow: hidden;
+            position: relative;
+            border: 2px solid #3d3d3d;
+        }
+
+        .connection-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .connection-avatar.premium {
+            border-color: #f2fc86;
+        }
+
+        .connection-avatar.company {
+            border-color: #03dac6;
+        }
+
+        .connection-status {
+            position: absolute;
+            bottom: 3px;
+            right: 3px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #4CAF50;
+            border: 2px solid #2d2d2d;
+        }
+
+        .connection-badge {
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            background-color: #f2fc86;
+            color: #121212;
+            font-size: 0.7em;
+            font-weight: bold;
+            padding: 3px 8px;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            white-space: nowrap;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            .connection-card.highlighted {
+                grid-template-columns: 1fr;
+            }
+
+            .connection-profile {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .connection-actions {
+                flex-direction: row;
+                justify-content: space-between;
+                width: 100%;
+            }
+
+            .connection-actions button {
+                flex: 1;
+            }
+        }
     </style>
 </head>
 
@@ -1595,7 +1885,6 @@
         </div>
 
         <div id="community" class="screen">
-            <h2>Community</h2>
 
             <!-- Add post creation form -->
             <div class="post-form">
@@ -1708,7 +1997,6 @@
 
         <div id="connections" class="screen">
             <div class="nav-arrow" onclick="showScreen('start-screen')">←</div>
-            <h2>Connections</h2>
             <p class="section-intro">Discover people, events, and initiatives aligned with your environmental interests
             </p>
 
@@ -1726,6 +2014,122 @@
                 <button class="connection-tab">Events</button>
                 <button class="connection-tab">Initiatives</button>
                 <button class="connection-tab">Companies</button>
+            </div>
+
+            <!-- Horizontally swipeable highlighted connections -->
+            <div class="highlighted-connections">
+                <h3 class="section-title">Recommended For You <span class="swipe-indicator"><i
+                            class="fas fa-chevron-right"></i></span></h3>
+
+                <div class="highlighted-cards-container">
+                    <div class="highlighted-cards">
+                        <!-- Enhanced Highlighted Person -->
+                        <div class="connection-card highlighted">
+                            <div class="connection-profile">
+                                <div class="connection-avatar premium">
+                                    <img src="https://randomuser.me/api/portraits/women/42.jpg" alt="Dr. Emma Winters">
+                                    <span class="connection-status online"></span>
+                                </div>
+                                <div class="connection-badge"><i class="fas fa-star"></i> Top in field</div>
+                            </div>
+                            <div class="connection-info">
+                                <div class="connection-header">
+                                    <h4>Dr. Emma Winters</h4>
+                                    <span class="connection-location"><i class="fas fa-map-marker-alt"></i> London,
+                                        UK</span>
+                                </div>
+                                <p class="connection-detail">Climate Policy Expert & UN Advisor</p>
+                                <p class="connection-bio">Leading research on climate adaptation strategies for coastal
+                                    cities. Published author with 15+ years experience in environmental policy.</p>
+                                <p class="connection-mutual"><i class="fas fa-user-friends"></i> 8 mutual connections
+                                    including <span class="mutual-highlight">James Wilson</span></p>
+                                <div class="connection-tags">
+                                    <span class="connection-tag">Policy Reform</span>
+                                    <span class="connection-tag">Advocacy</span>
+                                    <span class="connection-tag">Climate Adaptation</span>
+                                </div>
+                            </div>
+                            <div class="connection-actions">
+                                <button class="connect-button"><i class="fas fa-plus"></i> Connect</button>
+                                <button class="view-profile-button"><i class="fas fa-user"></i> View Profile</button>
+                            </div>
+                        </div>
+
+                        <!-- Enhanced Highlighted Company -->
+                        <div class="connection-card highlighted">
+                            <div class="connection-profile">
+                                <div class="connection-avatar company">
+                                    <img src="https://images.unsplash.com/photo-1560179707-f14e90ef3623?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80"
+                                        alt="EcoSolutions Inc.">
+                                </div>
+                                <div class="connection-badge"><i class="fas fa-award"></i> B-Corp Certified</div>
+                            </div>
+                            <div class="connection-info">
+                                <div class="connection-header">
+                                    <h4>EcoSolutions Inc. <i class="fas fa-check-circle"
+                                            style="color: #03dac6; font-size: 0.8em;"></i></h4>
+                                    <span class="connection-location"><i class="fas fa-map-marker-alt"></i> Portland,
+                                        OR</span>
+                                </div>
+                                <p class="connection-detail">Sustainable Products & Circular Economy Solutions</p>
+                                <p class="connection-bio">Creating innovative zero-waste products since 2015. Our
+                                    mission is to eliminate single-use plastics through affordable, accessible
+                                    alternatives.</p>
+                                <p class="connection-followers"><i class="fas fa-user-friends"></i> 15.2K followers
+                                    including <span class="mutual-highlight">3 connections</span></p>
+                                <div class="connection-tags">
+                                    <span class="connection-tag">Zero Waste</span>
+                                    <span class="connection-tag">B-Corp</span>
+                                    <span class="connection-tag">Plastic Alternatives</span>
+                                </div>
+                            </div>
+                            <div class="connection-actions">
+                                <button class="follow-button"><i class="fas fa-plus"></i> Follow</button>
+                                <button class="view-profile-button"><i class="fas fa-building"></i> View
+                                    Company</button>
+                            </div>
+                        </div>
+
+                        <!-- Additional Highlighted Person -->
+                        <div class="connection-card highlighted">
+                            <div class="connection-profile">
+                                <div class="connection-avatar">
+                                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Dr. Marcus Johnson">
+                                    <span class="connection-status"></span>
+                                </div>
+                                <div class="connection-badge"><i class="fas fa-flask"></i> Researcher</div>
+                            </div>
+                            <div class="connection-info">
+                                <div class="connection-header">
+                                    <h4>Dr. Marcus Johnson</h4>
+                                    <span class="connection-location"><i class="fas fa-map-marker-alt"></i> Berlin,
+                                        Germany</span>
+                                </div>
+                                <p class="connection-detail">Renewable Energy Scientist</p>
+                                <p class="connection-bio">Developing next-generation solar cell technology with 30%
+                                    higher efficiency. Leading a team of researchers at Berlin Energy Institute.</p>
+                                <p class="connection-mutual"><i class="fas fa-user-friends"></i> 4 mutual connections
+                                </p>
+                                <div class="connection-tags">
+                                    <span class="connection-tag">Solar Energy</span>
+                                    <span class="connection-tag">Materials Science</span>
+                                    <span class="connection-tag">Photovoltaics</span>
+                                </div>
+                            </div>
+                            <div class="connection-actions">
+                                <button class="connect-button"><i class="fas fa-plus"></i> Connect</button>
+                                <button class="view-profile-button"><i class="fas fa-user"></i> View Profile</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pagination indicators -->
+                    <div class="pagination-dots">
+                        <span class="pagination-dot active"></span>
+                        <span class="pagination-dot"></span>
+                        <span class="pagination-dot"></span>
+                    </div>
+                </div>
             </div>
 
             <!-- People suggestions -->
@@ -1996,7 +2400,7 @@
                 <span>Community</span>
             </a>
             <a href="javascript:void(0)" class="nav-button" onclick="showScreen('connections')">
-                <i class="fas fa-link"></i>
+                <i class="fas fa-heart"></i>
                 <span>Connections</span>
             </a>
         </nav>
@@ -2481,19 +2885,19 @@
             const style = document.createElement('style');
             style.textContent = `
                 .media-buttons {
-                    display: flex;
+            display: flex;
                     margin: 10px 0;
                 }
                 .camera-button {
-                    background-color: #2d2d2d;
+            background-color: #2d2d2d;
                     color: #f2fc86;
                     border: none;
                     border-radius: 50%;
                     width: 40px;
                     height: 40px;
-                    display: flex;
+            display: flex;
                     justify-content: center;
-                    align-items: center;
+            align-items: center;
                     margin-right: 10px;
                     cursor: pointer;
                     transition: all 0.3s ease;
@@ -2519,7 +2923,7 @@
                     width: 100%;
                 }
                 .remove-media {
-                    position: absolute;
+            position: absolute;
                     top: 5px;
                     right: 5px;
                     background: rgba(0,0,0,0.7);
@@ -2562,8 +2966,8 @@
                     color: #fff;
                     border: none;
                     border-radius: 50%;
-                    width: 60px;
-                    height: 60px;
+            width: 60px;
+            height: 60px;
                     display: flex;
                     justify-content: center;
                     align-items: center;
@@ -2577,15 +2981,15 @@
                     background-color: rgba(45, 45, 45, 0.7);
                     color: #fff;
                     border: none;
-                    border-radius: 50%;
+            border-radius: 50%;
                     width: 40px;
                     height: 40px;
                     position: absolute;
                     top: 20px;
                     right: 20px;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
                     cursor: pointer;
                 }
             `;
@@ -3045,6 +3449,62 @@
                     }
                 }, 20); // Match the transition duration
             }, 1000);
+        });
+    </script>
+
+    <script>
+        // Add this to your existing script section
+        document.addEventListener('DOMContentLoaded', function () {
+            const highlightedCards = document.querySelector('.highlighted-cards');
+            const paginationDots = document.querySelectorAll('.pagination-dot');
+            let currentIndex = 0;
+            let startX, moveX;
+
+            // Touch events for swiping
+            highlightedCards.addEventListener('touchstart', function (e) {
+                startX = e.touches[0].clientX;
+                moveX = 0;
+            });
+
+            highlightedCards.addEventListener('touchmove', function (e) {
+                moveX = e.touches[0].clientX - startX;
+                // Prevent default to stop page scrolling while swiping cards
+                if (Math.abs(moveX) > 10) {
+                    e.preventDefault();
+                }
+            }, { passive: false });
+
+            highlightedCards.addEventListener('touchend', function () {
+                if (moveX < -50 && currentIndex < 2) { // Swipe left
+                    currentIndex++;
+                    updateCardPosition();
+                } else if (moveX > 50 && currentIndex > 0) { // Swipe right
+                    currentIndex--;
+                    updateCardPosition();
+                }
+            });
+
+            // Click events for pagination dots
+            paginationDots.forEach((dot, index) => {
+                dot.addEventListener('click', function () {
+                    currentIndex = index;
+                    updateCardPosition();
+                });
+            });
+
+            function updateCardPosition() {
+                // Update card position
+                highlightedCards.style.transform = `translateX(-${currentIndex * 33.333}%)`;
+
+                // Update pagination dots
+                paginationDots.forEach((dot, index) => {
+                    if (index === currentIndex) {
+                        dot.classList.add('active');
+                    } else {
+                        dot.classList.remove('active');
+                    }
+                });
+            }
         });
     </script>
 </body>
