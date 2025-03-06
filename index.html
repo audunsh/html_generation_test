@@ -1601,17 +1601,7 @@
             <div class="post-form">
                 <textarea placeholder="Share your environmental thoughts or initiatives..."></textarea>
                 <div class="post-form-actions">
-                    <div class="post-form-attachments">
-                        <button class="attachment-button">
-                            <i class="fas fa-image"></i> Photo
-                        </button>
-                        <button class="attachment-button">
-                            <i class="fas fa-video"></i> Video
-                        </button>
-                        <button class="attachment-button">
-                            <i class="fas fa-link"></i> Link
-                        </button>
-                    </div>
+
                     <button class="post-button">Post</button>
                 </div>
             </div>
@@ -2470,6 +2460,16 @@
                 <button class="camera-button" title="Take photo or video">
                     <i class="fas fa-camera"></i>
                 </button>
+                <button class="camera-button">
+                    <i class="fas fa-image"></i> 
+                </button>
+                <button class="camera-button">
+                    <i class="fas fa-video"></i> 
+                </button>
+                <button class="camera-button">
+                    <i class="fas fa-link"></i> 
+                </button>
+    
                 <input type="file" id="media-input" accept="image/*,video/*" style="display:none">
             `;
 
@@ -2614,8 +2614,10 @@
                             <button class="camera-control-button capture-button"><i class="fas fa-camera"></i></button>
                             <button class="camera-control-button switch-mode"><i class="fas fa-video"></i></button>
                         </div>
-                        <button class="switch-camera"><i class="fas fa-sync-alt"></i></button>
+                        <button class="switch-camera"><i class="fas fa-sync-alt"></i></button
                     `;
+
+
 
                     document.body.appendChild(cameraUI);
 
